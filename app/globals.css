@@ -3,52 +3,62 @@
 @tailwind utilities;
 
 :root {
-  --background: #191414;
-  --foreground: #FFFFFF;
+  --background: #050505;
+  --foreground: rgba(255, 255, 255, 0.9);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --accent: #10b981;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('https://fonts.cdnfonts.com/s/15011/SFProDisplay-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar for Spotify aesthetic */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 4px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #191414;
+  background: var(--background);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #3E3E3E;
-  border-radius: 6px;
-  border: 3px solid #191414;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #B3B3B3;
+  background: var(--accent);
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight text-white;
-  }
-  
-  p {
-    @apply text-spotify-textSec leading-relaxed;
+  h1, h2, h3 {
+    @apply tracking-tight font-bold text-white/90;
   }
 }
 
-@layer components {
-  .btn-primary {
-    @apply bg-spotify-green hover:bg-spotify-greenHover text-spotify-black font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95;
-  }
-  
-  .glass-card {
-    @apply bg-spotify-card border border-white/10 rounded-2xl p-8 hover:border-spotify-green/50 transition-colors duration-500;
-  }
+/* Custom Utility for background blending */
+.bg-void {
+  background-color: #050505;
+}
+
+/* Hide VEO watermark by masking the bottom of the container */
+.sequence-container {
+  mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: #000;
 }

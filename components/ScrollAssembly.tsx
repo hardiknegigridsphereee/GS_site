@@ -1,162 +1,519 @@
+
+
+
 "use client";
 
-import { useRef, Suspense, useEffect } from "react";
-import { useScroll, useTransform, motion, useSpring } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { Environment, ContactShadows, Float, useProgress, Center } from "@react-three/drei";
-import Model3D from "./Model3D";
+import { Environment, useGLTF } from "@react-three/drei";
+import {
+  Canvas,
+  useFrame,
+  useThree,
+} from "@react-three/fiber";
+
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import * as THREE from "three";
+import { easing } from "maath";
 
 interface ScrollAssemblyProps {
   onLoadComplete: () => void;
   onProgress: (progress: number) => void;
 }
 
-export default function ScrollAssembly({ onLoadComplete, onProgress }: ScrollAssemblyProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { progress: loadProgress, active } = useProgress();
+// function ModelScene({
+//   scrollProgress,
+// }: {
+//   scrollProgress: number;
+// }) {
+//   const { scene } = useGLTF("/main-1.glb");
 
-  useEffect(() => {
-    onProgress(loadProgress);
-    if (!active && loadProgress === 100) {
-      // Delay slightly for smooth transition
-      const timer = setTimeout(() => {
-        onLoadComplete();
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, [loadProgress, active, onLoadComplete, onProgress]);
+//   const rootRef = useRef<THREE.Group>(null);
 
-  // 1. Scroll tracking
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+//   const { camera } = useThree();
 
-  // Smooth out the scroll progress for a "snappy" feel
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 40,
-    restDelta: 0.0001
+//   // CENTER MODEL
+//   const centeredScene = useMemo(() => {
+//     const cloned = scene.clone();
+
+//     const box = new THREE.Box3().setFromObject(
+//       cloned
+//     );
+
+//     const center = new THREE.Vector3();
+
+//     box.getCenter(center);
+
+//     cloned.position.sub(center);
+
+//     return cloned;
+//   }, [scene]);
+
+//   // CREATE CLEAN ASSEMBLY GROUPS
+//   const assemblies = useMemo(() => {
+//     const topGroup = new THREE.Group();
+//     const middleGroup = new THREE.Group();
+//     const bottomGroup = new THREE.Group();
+
+//     centeredScene.updateMatrixWorld(true);
+
+//     centeredScene.traverse((child) => {
+//       if (child instanceof THREE.Mesh) {
+//         const clonedMesh = child.clone();
+
+//         const worldPos = new THREE.Vector3();
+
+//         child.getWorldPosition(worldPos);
+
+//         // preserve transforms
+//         clonedMesh.position.copy(
+//           child.position
+//         );
+
+//         clonedMesh.rotation.copy(
+//           child.rotation
+//         );
+
+//         clonedMesh.scale.copy(child.scale);
+
+//         // GROUP BASED ON HEIGHT
+//         if (worldPos.y > 0.3) {
+//           topGroup.add(clonedMesh);
+
+//         } else if (worldPos.y < -0.3) {
+//           bottomGroup.add(clonedMesh);
+
+//         } else {
+//           middleGroup.add(clonedMesh);
+//         }
+//       }
+//     });
+
+//     return {
+//       topGroup,
+//       middleGroup,
+//       bottomGroup,
+//     };
+//   }, [centeredScene]);
+
+//   useFrame((state, delta) => {
+//     if (!rootRef.current) return;
+
+//     // subtle floating
+//     rootRef.current.position.y =
+//       Math.sin(
+//         state.clock.elapsedTime * 0.8
+//       ) * 0.015;
+
+//     const progress = THREE.MathUtils.clamp(
+//       scrollProgress,
+//       0,
+//       1
+//     );
+
+//     // STAGED PHASES
+
+//     // 0 → 40%
+//     const topOpen =
+//       THREE.MathUtils.smoothstep(
+//         progress,
+//         0,
+//         0.4
+//       );
+
+//     // 40 → 70%
+//     const middleReveal =
+//       THREE.MathUtils.smoothstep(
+//         progress,
+//         0.4,
+//         0.7
+//       );
+
+//     // 70 → 100%
+//     const finalReveal =
+//       THREE.MathUtils.smoothstep(
+//         progress,
+//         0.7,
+//         1
+//       );
+
+//     // TOP OPENS SLIGHTLY
+//     easing.damp3(
+//       assemblies.topGroup.position,
+//       [0, topOpen * 0.12, 0],
+//       0.15,
+//       delta
+//     );
+
+//     // INTERNAL ARCHITECTURE
+//     easing.damp3(
+//       assemblies.middleGroup.position,
+//       [0, 0, middleReveal * 0.08],
+//       0.15,
+//       delta
+//     );
+
+//     // BASE SECTION
+//     easing.damp3(
+//       assemblies.bottomGroup.position,
+//       [0, -finalReveal * 0.06, 0],
+//       0.15,
+//       delta
+//     );
+
+//     // VERY SUBTLE PRODUCT ROTATION
+//     easing.dampE(
+//       rootRef.current.rotation,
+//       [0, progress * 0.08, 0],
+//       0.15,
+//       delta
+//     );
+
+//     // PREMIUM CAMERA MOTION
+//     easing.damp3(
+//       camera.position,
+//       [
+//         Math.sin(
+//           progress *
+//             Math.PI *
+//             0.5
+//         ) * 0.05,
+
+//         1.2,
+
+//         3.8 - progress * 0.12,
+//       ],
+//       0.15,
+//       delta
+//     );
+
+//     camera.lookAt(0, 0, 0);
+//   });
+
+//   return (
+//     <group ref={rootRef}>
+//       <primitive
+//         object={assemblies.topGroup}
+//       />
+
+//       <primitive
+//         object={assemblies.middleGroup}
+//       />
+
+//       <primitive
+//         object={assemblies.bottomGroup}
+//       />
+//     </group>
+//   );
+// }
+
+function ModelScene({
+  scrollProgress,
+}: {
+  scrollProgress: number;
+}) {
+  const { scene } = useGLTF("/main-1.glb");
+
+  const rootRef = useRef<THREE.Group>(null);
+
+  const { camera } = useThree();
+
+  // CENTER MODEL
+  const centeredScene = useMemo(() => {
+    const cloned = scene.clone();
+
+    const box = new THREE.Box3().setFromObject(
+      cloned
+    );
+
+    const center = new THREE.Vector3();
+
+    box.getCenter(center);
+
+    cloned.position.sub(center);
+
+    return cloned;
+  }, [scene]);
+
+  // STORE ORIGINAL POSITIONS
+  const meshes = useMemo(() => {
+    const data: {
+      mesh: THREE.Mesh;
+      original: THREE.Vector3;
+      normalizedY: number;
+    }[] = [];
+
+    const box = new THREE.Box3().setFromObject(
+      centeredScene
+    );
+
+    const height =
+      box.max.y - box.min.y;
+
+    centeredScene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        data.push({
+          mesh: child,
+
+          original:
+            child.position.clone(),
+
+          // normalize height position
+          normalizedY:
+            (child.position.y -
+              box.min.y) /
+            height,
+        });
+      }
+    });
+
+    return data;
+  }, [centeredScene]);
+
+  useFrame((state, delta) => {
+    if (!rootRef.current) return;
+
+    // subtle floating
+    rootRef.current.position.y =
+      Math.sin(
+        state.clock.elapsedTime * 0.8
+      ) * 0.01;
+
+    const progress =
+      THREE.MathUtils.clamp(
+        scrollProgress,
+        0,
+        1
+      );
+
+    // smooth premium easing
+    const explode =
+      THREE.MathUtils.smootherstep(
+        progress,
+        0,
+        1
+      );
+
+    meshes.forEach((item) => {
+      const {
+        mesh,
+        original,
+        normalizedY,
+      } = item;
+
+      // EXPLODED OFFSET
+      // based ONLY on vertical position
+
+      const offsetY =
+        (normalizedY - 0.5) *
+        explode *
+        0.8;
+
+      easing.damp3(
+        mesh.position,
+        [
+          original.x,
+          original.y + offsetY,
+          original.z,
+        ],
+        0.18,
+        delta
+      );
+    });
+
+    // subtle product rotation
+    easing.dampE(
+      rootRef.current.rotation,
+      [0, progress * 0.08, 0],
+      0.15,
+      delta
+    );
+
+    // premium camera
+    easing.damp3(
+      camera.position,
+      [
+        0,
+        1.1,
+        3.8 - progress * 0.15,
+      ],
+      0.15,
+      delta
+    );
+
+    camera.lookAt(0, 0, 0);
   });
 
   return (
-    <div ref={containerRef} className="relative h-[800vh] w-full bg-spotify-black">
-      {/* Sticky 3D Canvas Container */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Canvas shadows camera={{ position: [0, 0, 12], fov: 40 }}>
-            <color attach="background" args={["#191414"]} />
-            <ambientLight intensity={1.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} castShadow />
-            <pointLight position={[-10, -10, -10]} intensity={1} />
-            
-            <Suspense fallback={null}>
-              <Center>
-                <Model3D progress={smoothProgress} />
-              </Center>
-              <ContactShadows 
-                position={[0, -5, 0]} 
-                opacity={0.4} 
-                scale={20} 
-                blur={2} 
-                far={4.5} 
-              />
-              <Environment preset="city" />
-            </Suspense>
-          </Canvas>
-        </div>
-        
-        {/* Scrollytelling Overlays */}
-        <div className="absolute inset-0 pointer-events-none z-10">
-          {/* SECTION 1: Intro */}
-          <OverlaySection progress={scrollYProgress} range={[0, 0.2]}>
-            <div className="flex flex-col items-center text-center">
-              <h1 className="text-6xl md:text-8xl mb-4">Grid Sphere</h1>
-              <p className="text-xl md:text-2xl text-spotify-green uppercase tracking-[0.2em]">
-                The Future is Assembled
-              </p>
-            </div>
-          </OverlaySection>
-
-          {/* SECTION 2: Modular Sensors */}
-          <OverlaySection progress={scrollYProgress} range={[0.2, 0.4]} align="left">
-            <div className="max-w-md ml-12 md:ml-24">
-              <h2 className="text-5xl mb-4">Internal Precision</h2>
-              <p className="text-lg text-spotify-textSec">
-                Every component is crafted for modularity. As you scroll, 
-                witness the complex intelligence hidden beneath the surface.
-              </p>
-            </div>
-          </OverlaySection>
-
-          {/* SECTION 3: Exploded View */}
-          <OverlaySection progress={scrollYProgress} range={[0.4, 0.6]} align="right">
-            <div className="max-w-md mr-12 md:mr-24 text-right">
-              <h2 className="text-5xl mb-4 text-spotify-green">Exploded Intelligence</h2>
-              <p className="text-lg text-spotify-textSec">
-                40+ individual sensors and processing units working in 
-                perfect harmony to monitor your farm 24/7.
-              </p>
-            </div>
-          </OverlaySection>
-
-          {/* SECTION 4: 5G Connected */}
-          <OverlaySection progress={scrollYProgress} range={[0.6, 0.8]} align="center-bottom">
-            <div className="text-center">
-              <h2 className="text-5xl mb-4">Disassembled but Connected</h2>
-              <p className="text-lg max-w-lg mx-auto text-spotify-textSec">
-                Edge computing ensures that even when modularly separated, 
-                the Grid Sphere operates as a singular brain.
-              </p>
-            </div>
-          </OverlaySection>
-
-          {/* SECTION 5: Final Call */}
-          <OverlaySection progress={scrollYProgress} range={[0.8, 1.0]}>
-            <div className="flex flex-col items-center text-center">
-              <h2 className="text-6xl mb-6">Explore the Architecture</h2>
-              <p className="text-xl mb-10 max-w-xl text-spotify-textSec">
-                Fully exploded. Ready for inspection. Deploy the most advanced weather station ever built.
-              </p>
-              <button className="btn-primary pointer-events-auto">
-                Order Your Unit
-              </button>
-            </div>
-          </OverlaySection>
-        </div>
-      </div>
-    </div>
+    <group ref={rootRef}>
+      <primitive object={centeredScene} />
+    </group>
   );
 }
 
-function OverlaySection({ 
-  children, 
-  progress, 
-  range, 
-  align = "center" 
-}: { 
-  children: React.ReactNode; 
-  progress: any; 
-  range: [number, number];
-  align?: "center" | "left" | "right" | "center-bottom";
-}) {
-  const opacity = useTransform(progress, [range[0], range[0] + 0.05, range[1] - 0.05, range[1]], [0, 1, 1, 0]);
-  const y = useTransform(progress, [range[0], range[0] + 0.05, range[1] - 0.05, range[1]], [20, 0, 0, -20]);
-  const scale = useTransform(progress, [range[0], range[0] + 0.05, range[1] - 0.05, range[1]], [0.95, 1, 1, 1.05]);
+useGLTF.preload("/main-1.glb");
 
-  const alignmentClasses = {
-    "center": "items-center justify-center",
-    "left": "items-start justify-center",
-    "right": "items-end justify-center",
-    "center-bottom": "items-center justify-end pb-32",
-  };
+export default function ScrollAssembly({
+  onLoadComplete,
+  onProgress,
+}: ScrollAssemblyProps) {
+  const [scrollProgress, setScrollProgress] =
+    useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+
+      const maxScroll =
+        document.documentElement
+          .scrollHeight -
+        window.innerHeight;
+
+      const progress =
+        maxScroll > 0
+          ? scrollY / maxScroll
+          : 0;
+
+      setScrollProgress(progress);
+
+      onProgress?.(
+        Math.floor(progress * 100)
+      );
+    };
+
+    window.addEventListener(
+      "scroll",
+      handleScroll
+    );
+
+    return () =>
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
+  }, [onProgress]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onLoadComplete();
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, [onLoadComplete]);
 
   return (
-    <motion.div
-      style={{ opacity, y, scale }}
-      className={`absolute inset-0 flex flex-col p-8 ${alignmentClasses[align]}`}
+    <div
+      style={{
+        height: "300vh",
+        position: "relative",
+      }}
     >
-      {children}
-    </motion.div>
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          width: "100%",
+          height: "100vh",
+          overflow: "hidden",
+
+          background:
+            "radial-gradient(circle at center, #111 0%, #050505 100%)",
+        }}
+      >
+        <Canvas
+          camera={{
+            position: [0, 1.2, 3.8],
+            fov: 42,
+          }}
+        >
+          {/* DEPTH */}
+
+          <fog
+            attach="fog"
+            args={["#050505", 4, 10]}
+          />
+
+          {/* ENVIRONMENT */}
+
+          <Environment preset="city" />
+
+          {/* LIGHTING */}
+
+          <ambientLight intensity={1.1} />
+
+          <directionalLight
+            position={[5, 8, 5]}
+            intensity={1.6}
+          />
+
+          <directionalLight
+            position={[-5, 5, 3]}
+            intensity={0.8}
+            color="#10b981"
+          />
+
+          <pointLight
+            position={[0, 2, 2]}
+            intensity={0.5}
+          />
+
+          <ModelScene
+            scrollProgress={scrollProgress}
+          />
+        </Canvas>
+
+        {/* UI OVERLAY */}
+
+        <div
+          style={{
+            position: "absolute",
+            bottom: 40,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              background:
+                "rgba(255,255,255,0.05)",
+
+              border:
+                "1px solid rgba(255,255,255,0.08)",
+
+              backdropFilter: "blur(20px)",
+
+              borderRadius: "999px",
+
+              padding: "10px 22px",
+
+              color: "#10b981",
+
+              fontSize: "13px",
+
+              letterSpacing: "0.15em",
+            }}
+          >
+            {scrollProgress < 0.1 &&
+              "SCROLL TO EXPLORE"}
+
+            {scrollProgress >= 0.1 &&
+              scrollProgress < 0.4 &&
+              "TOP SHELL OPENING"}
+
+            {scrollProgress >= 0.4 &&
+              scrollProgress < 0.7 &&
+              "INTERNAL ARCHITECTURE"}
+
+            {scrollProgress >= 0.7 &&
+              "FULL SYSTEM REVEAL"}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
