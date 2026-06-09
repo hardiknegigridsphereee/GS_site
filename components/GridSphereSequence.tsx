@@ -8,7 +8,7 @@ interface GridSphereSequenceProps {
   onLoadComplete?: () => void;
 }
 
-export default function GridSphereSequence({ 
+export default function GridSphereSequence({
   frameCount = 240,
   onLoadComplete
 }: GridSphereSequenceProps) {
@@ -54,7 +54,9 @@ export default function GridSphereSequence({
   const opacity5 = useTransform(smoothProgress, [0.88, 0.92, 1.0], [0, 1, 1]);
   const y5 = useTransform(smoothProgress, [0.88, 0.92, 1.0], [30, 0, 0]);
 
-  // Preload images
+  const lastRenderedIndex = useRef<number>(-1);
+
+  // Preload images with off-thread decoding
   useEffect(() => {
     let loadedCount = 0;
     const loadedImages: HTMLImageElement[] = [];
@@ -65,7 +67,7 @@ export default function GridSphereSequence({
         const frameNumber = (i + 1).toString().padStart(3, "0");
         img.src = `/sequence/ezgif-frame-${frameNumber}.jpg`;
 
-        const handleLoad = () => {
+        const onFrameProcessed = () => {
           loadedCount++;
           setLoadProgress(Math.floor((loadedCount / frameCount) * 100));
           if (loadedCount === frameCount) {
@@ -75,14 +77,41 @@ export default function GridSphereSequence({
           }
         };
 
-        img.onload = handleLoad;
-        img.onerror = handleLoad; // Safe fallback to avoid loading screen lock on load fail
+        img.onload = () => {
+          if ("decode" in img) {
+            img.decode()
+              .then(onFrameProcessed)
+              .catch(onFrameProcessed);
+          } else {
+            onFrameProcessed();
+          }
+        };
+
+        img.onerror = onFrameProcessed; // Safe fallback to avoid loading screen lock
         loadedImages[i] = img;
       }
     };
 
     preloadImages();
   }, [frameCount, onLoadComplete]);
+
+  // Set canvas resolution once images are loaded
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || images.length === 0) return;
+
+    const firstImg = images[0];
+    if (firstImg) {
+      const cropBottomPercent = 0.06;
+      const width = firstImg.naturalWidth || firstImg.width || 1920;
+      const height = firstImg.naturalHeight || firstImg.height || 1080;
+      canvas.width = width;
+      canvas.height = height * (1 - cropBottomPercent);
+
+      // Reset the last rendered index to force initial redraw
+      lastRenderedIndex.current = -1;
+    }
+  }, [images]);
 
   // Render loop
   useEffect(() => {
@@ -94,6 +123,11 @@ export default function GridSphereSequence({
 
     const render = () => {
       const currentIndex = Math.min(Math.floor(frameIndex.get()), frameCount - 1);
+
+      // Skip redraw if the frame index has not changed
+      if (currentIndex === lastRenderedIndex.current) return;
+      lastRenderedIndex.current = currentIndex;
+
       const img = images[currentIndex];
 
       if (img && img.complete) {
@@ -106,62 +140,28 @@ export default function GridSphereSequence({
         const sourceWidth = img.width;
         const sourceHeight = img.height * (1 - cropBottomPercent);
 
-        // Calculate dimensions to perfectly center the cropped image inside the canvas
-        const imgAspect = sourceWidth / sourceHeight;
-        const canvasAspect = canvas.width / canvas.height;
-
-        let renderWidth, renderHeight;
-        if (canvasAspect > imgAspect) {
-          // Canvas is wider than image (landscape)
-          renderHeight = canvas.height;
-          renderWidth = sourceWidth * (canvas.height / sourceHeight);
-        } else {
-          // Canvas is taller than image (portrait)
-          renderWidth = canvas.width;
-          renderHeight = sourceHeight * (canvas.width / sourceWidth);
-        }
-
-        const offsetX = (canvas.width - renderWidth) / 2;
-        const offsetY = (canvas.height - renderHeight) / 2;
-
         ctx.drawImage(
           img,
           0,
           0,
           sourceWidth,
           sourceHeight, // Source crop
-          offsetX,
-          offsetY,
-          renderWidth,
-          renderHeight // Destination fit
+          0,
+          0,
+          canvas.width,
+          canvas.height // Destination fit (1-to-1 matching dimensions)
         );
       }
     };
 
     // Listen to frameIndex updates and trigger render
-    const unsubscribe = frameIndex.on("change", () => {
-      requestAnimationFrame(render);
-    });
+    const unsubscribe = frameIndex.on("change", render);
 
     // Initial render
-    requestAnimationFrame(render);
+    render();
 
     return () => unsubscribe();
   }, [images, frameIndex, frameCount]);
-
-  // Handle canvas sizing on window resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (canvasRef.current) {
-        canvasRef.current.width = window.innerWidth * window.devicePixelRatio;
-        canvasRef.current.height = window.innerHeight * window.devicePixelRatio;
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <div ref={containerRef} className="relative h-[500vh] bg-[#050505]">
@@ -179,92 +179,127 @@ export default function GridSphereSequence({
         {/* Apple-Style Text Overlays */}
         {!isLoading && (
           <div className="absolute inset-0 pointer-events-none z-10">
-            <div className="relative w-full h-full max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-center">
-              
+            <div className="relative w-full h-full max-w-[1800px] mx-auto px-8 md:px-24 flex items-center justify-center">
               {/* Intro Title */}
               <motion.div
                 style={{ opacity: opacity1, y: y1 }}
                 className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
               >
                 <div className="text-xs md:text-sm font-semibold tracking-[0.4em] text-[#10b981] mb-4 uppercase">
-                  INTRODUCING
+                  INTRODUCING THE COGNITIVE ORCHARD
                 </div>
                 <h1 className="text-5xl md:text-8xl font-black tracking-tight text-white mb-6 uppercase">
                   GRID SPHERE
                 </h1>
                 <p className="text-lg md:text-2xl text-white/60 max-w-2xl font-light leading-relaxed">
-                  The Ultimate Weather Intelligence Station. Built for precision agriculture.
+                  Predict diseases, save water, and maximize yields. The ultimate intelligence hub for modern agriculture.
                 </p>
                 <div className="mt-12 flex flex-col items-center gap-2 text-white/30 text-[10px] tracking-[0.3em] uppercase animate-pulse">
-                  <span>Scroll to explore</span>
+                  <span>Scroll to explore outcomes</span>
                   <span className="text-sm">↓</span>
                 </div>
               </motion.div>
 
-              {/* Caption 2: Weather Instruments */}
+              {/* Caption 2: Weather Instruments & Microclimate Data */}
               <motion.div
                 style={{ opacity: opacity2, y: y2 }}
-                className="absolute left-6 md:left-12 top-[22%] max-w-sm md:max-w-md"
+                className="absolute left-6 md:left-12 top-[22%] max-w-sm md:max-w-md flex flex-col gap-4"
               >
-                <div className="text-xs font-semibold tracking-widest text-[#10b981] mb-2 uppercase">
-                  01 / ATMOSPHERICS
+                <div className="text-xs font-semibold tracking-widest text-[#10b981] mb-1 uppercase">
+                  01 / REAL-TIME TELEMETRY
                 </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  Precision Instruments
+                <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                  Microclimate Stream
                 </h3>
                 <p className="text-sm md:text-base text-white/60 leading-relaxed font-light">
-                  Ultrasonic anemometer, high-frequency wind vane, and integrated rain gauge. Calibrated to capture macro and micro shifts instantly.
+                  Captures local rain, wind, temperature, and solar variations directly at your orchard's coordinates to end guesswork.
                 </p>
+
+                {/* Minimal Telemetry Badge */}
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#10b981]/25 bg-[#10b981]/5 w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
+                  <span className="text-[10px] font-bold text-white/80 tracking-wider uppercase font-mono">
+                    Sensors active: 22.4°C | 68% RH
+                  </span>
+                </div>
               </motion.div>
 
-              {/* Caption 3: Passive Radiation Shields */}
+              {/* Caption 3: Disease Engine & Analysis */}
               <motion.div
                 style={{ opacity: opacity3, y: y3 }}
-                className="absolute right-6 md:right-12 top-[38%] max-w-sm md:max-w-md text-right flex flex-col items-end"
+                className="absolute right-6 md:right-12 top-[30%] max-w-sm md:max-w-md text-right flex flex-col items-end gap-4"
               >
-                <div className="text-xs font-semibold tracking-widest text-[#10b981] mb-2 uppercase">
-                  02 / THERMAL BALANCE
+                <div className="text-xs font-semibold tracking-widest text-[#10b981] mb-1 uppercase">
+                  02 / PATHOGEN FORECASTS
                 </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  Radiation Shield
+                <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                  Predict Diseases
                 </h3>
                 <p className="text-sm md:text-base text-white/60 leading-relaxed font-light max-w-sm">
-                  Multi-plate aerated profile protects internal humidity and temperature sensors from solar radiation reflection, maintaining sub-degree accuracy.
+                  AI models analyze leaf wetness and thermal shifts to predict apple scab and blight outbreaks 48 hours before they spread.
                 </p>
+
+                {/* Minimal Threat Badge */}
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-red-500/25 bg-red-500/5 w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                  <span className="text-[10px] font-bold text-white/80 tracking-wider uppercase font-mono">
+                    Apple Scab Risk: 72% (Critical)
+                  </span>
+                </div>
               </motion.div>
 
-              {/* Caption 4: Intel-Ag Processor & Power */}
+              {/* Caption 4: Farmer Alerts */}
               <motion.div
                 style={{ opacity: opacity4, y: y4 }}
-                className="absolute left-6 md:left-12 bottom-[22%] max-w-sm md:max-w-md"
+                className="absolute left-6 md:left-12 bottom-[22%] max-w-sm md:max-w-md flex flex-col gap-4"
               >
-                <div className="text-xs font-semibold tracking-widest text-[#10b981] mb-2 uppercase">
-                  03 / TELEMETRY & EDGE
+                <div className="text-xs font-semibold tracking-widest text-[#10b981] mb-1 uppercase">
+                  03 / ACTIONABLE ADVISORY
                 </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  Intel-Ag Core
+                <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                  Smart Mobile Alerts
                 </h3>
                 <p className="text-sm md:text-base text-white/60 leading-relaxed font-light">
-                  Edge microprocessor processes raw climate data locally. Powered by smart-monitored Li-ion batteries charged by dual micro-solar panels.
+                  Receive direct recommendation alerts on your phone. Delay watering or target spray treatments strictly based on real-time needs.
                 </p>
+
+                {/* Minimal Notification Badge */}
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/25 bg-amber-500/5 w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  <span className="text-[10px] font-bold text-white/80 tracking-wider uppercase font-mono">
+                    Irrigation AI: Rain expected. Postpone watering.
+                  </span>
+                </div>
               </motion.div>
 
-              {/* Caption 5: Conclusion */}
+              {/* Caption 5: Conclusion & Healthier Orchard */}
               <motion.div
                 style={{ opacity: opacity5, y: y5 }}
                 className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
               >
                 <div className="text-xs md:text-sm font-semibold tracking-[0.4em] text-[#10b981] mb-4 uppercase">
-                  ENGINEERING
+                  04 / YIELD SECURITY
                 </div>
                 <h2 className="text-4xl md:text-7xl font-black tracking-tight text-white mb-6 uppercase">
-                  MODULAR BY DESIGN
+                  MAXIMIZE PROFIT
                 </h2>
                 <p className="text-base md:text-xl text-white/60 max-w-xl font-light leading-relaxed mb-8">
-                  Replaceable sensor nodes, upgradable modules, and 5G/LoRa telemetry ensure a lifetime of service.
+                  Deploying GridSphere eliminates traditional guesswork, guaranteeing crop safety and resource savings season after season.
                 </p>
-                <div className="px-6 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-[#10b981] text-xs font-bold tracking-widest uppercase">
-                  Fully Disassembled
+
+                <div className="flex gap-4 flex-wrap justify-center max-w-lg">
+                  <div className="px-5 py-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center">
+                    <span className="text-2xl font-bold text-[#10b981]">30%</span>
+                    <span className="text-[10px] text-white/40 tracking-wider uppercase font-semibold mt-0.5">Pesticide Savings</span>
+                  </div>
+                  <div className="px-5 py-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center">
+                    <span className="text-2xl font-bold text-[#10b981]">50%</span>
+                    <span className="text-[10px] text-white/40 tracking-wider uppercase font-semibold mt-0.5">Increased Profit</span>
+                  </div>
+                  <div className="px-5 py-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center">
+                    <span className="text-2xl font-bold text-[#10b981]">15%</span>
+                    <span className="text-[10px] text-white/40 tracking-wider uppercase font-semibold mt-0.5">Yield Increase</span>
+                  </div>
                 </div>
               </motion.div>
 
@@ -279,23 +314,27 @@ export default function GridSphereSequence({
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505]"
           >
-            <div className="relative h-32 w-32 mb-8">
-              {/* Pulsing Green Circle */}
-              <motion.div
+            <div className="relative h-24 w-24 mb-8 flex items-center justify-center">
+              <motion.img
+                src="/logo.png"
+                alt="GridSphere Logo"
                 animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.15, 0.3, 0.15],
+                  opacity: [0.5, 1, 0.5],
+                  scale: [0.95, 1.05, 0.95],
                 }}
                 transition={{
                   duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute inset-0 rounded-full bg-[#10b981] blur-2xl"
+                className="w-full h-full object-contain relative z-10"
               />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="h-16 w-16 rounded-full border-[3px] border-[#10b981] border-t-transparent animate-spin" />
-              </div>
+              {/* Subtle outer sweep effect */}
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                className="absolute -inset-4 rounded-full border border-white/5 border-t-white/30"
+              />
             </div>
 
             <motion.h2

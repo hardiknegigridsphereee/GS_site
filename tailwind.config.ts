@@ -21,6 +21,19 @@ const config: Config = {
       fontFamily: {
         sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
       },
+      // Use real pixel values — CSS variables cannot be resolved at Tailwind build time
+      fontSize: {
+        xs:   ["12px", { lineHeight: "1.5" }],
+        sm:   ["14px", { lineHeight: "1.5" }],
+        base: ["16px", { lineHeight: "1.6" }],
+        lg:   ["20px", { lineHeight: "1.5" }],
+        xl:   ["24px", { lineHeight: "1.4" }],
+        "2xl": ["32px", { lineHeight: "1.3" }],
+        "3xl": ["40px", { lineHeight: "1.2" }],
+        "4xl": ["40px", { lineHeight: "1.2" }],
+        "5xl": ["54px", { lineHeight: "1.1" }],
+        "6xl": ["64px", { lineHeight: "1.05" }],
+      },
     },
   },
   plugins: [],
