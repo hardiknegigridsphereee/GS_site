@@ -9,14 +9,14 @@ const galleryImages = Array.from({ length: 9 }, (_, i) => `/gallery/${i + 1}.jpg
 
 export default function GalleryPage() {
   return (
-    <main className="relative bg-[#050505] min-h-screen text-white">
+    <main className="relative bg-[#050505] min-h-screen text-canvas">
       <Header />
 
       {/* Hero Header */}
       <section className="py-24 px-6 md:px-12 text-center max-w-4xl mx-auto relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#10b981]/5 blur-[90px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-jade/5 blur-[90px] rounded-full pointer-events-none" />
         <div className="relative z-10 space-y-6">
-          <div className="text-xs font-bold tracking-[0.3em] text-[#10b981] uppercase">
+          <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase">
             Field Deployments
           </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase leading-none">
@@ -38,7 +38,7 @@ export default function GalleryPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (idx % 3) * 0.1 }}
-              className="group relative aspect-square rounded-[32px] overflow-hidden bg-white/5 border border-white/5"
+              className="group relative aspect-square rounded-[32px] overflow-hidden bg-canvas/5 border border-canvas/5"
             >
               <img 
                 src={src} 
@@ -46,7 +46,7 @@ export default function GalleryPage() {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-8">
-                <span className="text-white font-bold tracking-widest uppercase text-sm">Deployment #{idx + 1}</span>
+                <span className="text-canvas font-bold tracking-widest uppercase text-sm">Deployment #{idx + 1}</span>
               </div>
             </motion.div>
           ))}

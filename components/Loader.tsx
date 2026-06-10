@@ -36,12 +36,12 @@ export default function Loader({ progress }: LoaderProps) {
       <motion.h2 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-2xl font-bold tracking-tight text-white mb-2"
+        className="text-2xl font-bold tracking-tight text-canvas mb-2"
       >
         Assembling Grid Sphere...
       </motion.h2>
       
-      <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+      <div className="w-64 h-1 bg-canvas/10 rounded-full overflow-hidden">
         <motion.div 
           className="h-full bg-spotify-green"
           initial={{ width: 0 }}

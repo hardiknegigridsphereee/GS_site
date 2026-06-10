@@ -15,7 +15,7 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#050505] min-h-screen text-white">
+    <main className="relative bg-[#050505] min-h-screen text-canvas">
       {/* Sticky Header Navigation */}
       <Header />
 

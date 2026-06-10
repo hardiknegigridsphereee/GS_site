@@ -54,6 +54,10 @@ export default function GridSphereSequence({
   const opacity5 = useTransform(smoothProgress, [0.88, 0.92, 1.0], [0, 1, 1]);
   const y5 = useTransform(smoothProgress, [0.88, 0.92, 1.0], [30, 0, 0]);
 
+  // Glow Animation: Brightens and scales up when the product explodes/assembles (middle of the sequence)
+  const glowOpacity = useTransform(smoothProgress, [0, 0.2, 0.5, 0.8, 1.0], [0.2, 0.8, 1, 0.8, 0.2]);
+  const glowScale = useTransform(smoothProgress, [0, 0.5, 1.0], [0.8, 1.1, 0.8]);
+
   const lastRenderedIndex = useRef<number>(-1);
 
   // Preload images with off-thread decoding
@@ -105,8 +109,11 @@ export default function GridSphereSequence({
       const cropBottomPercent = 0.06;
       const width = firstImg.naturalWidth || firstImg.width || 1920;
       const height = firstImg.naturalHeight || firstImg.height || 1080;
-      canvas.width = width;
-      canvas.height = height * (1 - cropBottomPercent);
+      
+      // High-DPI (Retina) display support for maximum premium sharpness
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = width * dpr;
+      canvas.height = height * (1 - cropBottomPercent) * dpr;
 
       // Reset the last rendered index to force initial redraw
       lastRenderedIndex.current = -1;
@@ -165,17 +172,33 @@ export default function GridSphereSequence({
 
   return (
     <div ref={containerRef} className="relative h-[500vh] bg-[#050505]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
-        {/* Sequence canvas */}
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full object-contain pointer-events-none"
-          style={{
-            maxWidth: "100vw",
-            maxHeight: "100vh",
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center relative">
+        
+        {/* Soft white background glow that pulses and scales when product assembles/explodes */}
+        <motion.div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[600px] h-[400px] md:h-[600px] rounded-full pointer-events-none z-0"
+          style={{ 
+            background: 'radial-gradient(circle, rgba(19,47,32,0.8) 0%, rgba(19,47,32,0) 70%)',
+            filter: 'blur(60px)',
+            opacity: glowOpacity,
+            scale: glowScale
           }}
         />
 
+        {/* Sequence canvas */}
+        <canvas
+          ref={canvasRef}
+          className="relative z-10 w-full h-full object-contain pointer-events-none"
+          style={{
+            maxWidth: "100vw",
+            maxHeight: "100vh",
+            mixBlendMode: "lighten", // More premium than 'screen', preserves solid darks
+            filter: "contrast(1.05) drop-shadow(0px 10px 40px rgba(19,47,32,0.4))", // Subtle cinematic contrast and depth
+            imageRendering: "high-quality",
+            transform: "translateZ(0)",
+            willChange: "transform, opacity"
+          }}
+        />
         {/* Apple-Style Text Overlays */}
         {!isLoading && (
           <div className="absolute inset-0 pointer-events-none z-10">
@@ -185,16 +208,16 @@ export default function GridSphereSequence({
                 style={{ opacity: opacity1, y: y1 }}
                 className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
               >
-                <div className="text-xs md:text-sm font-semibold tracking-[0.4em] text-[#10b981] mb-4 uppercase">
+                <div className="text-xs md:text-sm font-semibold tracking-[0.4em] text-jade mb-4 uppercase">
                   INTRODUCING THE COGNITIVE ORCHARD
                 </div>
-                <h1 className="text-5xl md:text-8xl font-black tracking-tight text-white mb-6 uppercase">
+                <h1 className="text-5xl md:text-8xl font-black tracking-tight text-canvas mb-6 uppercase">
                   GRID SPHERE
                 </h1>
-                <p className="text-lg md:text-2xl text-white/60 max-w-2xl font-light leading-relaxed">
+                <p className="text-lg md:text-2xl text-canvas/60 max-w-2xl font-light leading-relaxed">
                   Predict diseases, save water, and maximize yields. The ultimate intelligence hub for modern agriculture.
                 </p>
-                <div className="mt-12 flex flex-col items-center gap-2 text-white/30 text-[10px] tracking-[0.3em] uppercase animate-pulse">
+                <div className="mt-12 flex flex-col items-center gap-2 text-canvas/30 text-[10px] tracking-[0.3em] uppercase animate-pulse">
                   <span>Scroll to explore outcomes</span>
                   <span className="text-sm">↓</span>
                 </div>
@@ -205,20 +228,20 @@ export default function GridSphereSequence({
                 style={{ opacity: opacity2, y: y2 }}
                 className="absolute left-6 md:left-12 top-[22%] max-w-sm md:max-w-md flex flex-col gap-4"
               >
-                <div className="text-xs font-semibold tracking-widest text-[#10b981] mb-1 uppercase">
+                <div className="text-xs font-semibold tracking-widest text-jade mb-1 uppercase">
                   01 / REAL-TIME TELEMETRY
                 </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                <h3 className="text-3xl md:text-4xl font-bold text-canvas leading-tight">
                   Microclimate Stream
                 </h3>
-                <p className="text-sm md:text-base text-white/60 leading-relaxed font-light">
+                <p className="text-sm md:text-base text-canvas/60 leading-relaxed font-light">
                   Captures local rain, wind, temperature, and solar variations directly at your orchard's coordinates to end guesswork.
                 </p>
 
                 {/* Minimal Telemetry Badge */}
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#10b981]/25 bg-[#10b981]/5 w-fit">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
-                  <span className="text-[10px] font-bold text-white/80 tracking-wider uppercase font-mono">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-jade/25 bg-jade/5 w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-jade animate-pulse" />
+                  <span className="text-[10px] font-bold text-canvas/80 tracking-wider uppercase font-mono">
                     Sensors active: 22.4°C | 68% RH
                   </span>
                 </div>
@@ -229,20 +252,20 @@ export default function GridSphereSequence({
                 style={{ opacity: opacity3, y: y3 }}
                 className="absolute right-6 md:right-12 top-[30%] max-w-sm md:max-w-md text-right flex flex-col items-end gap-4"
               >
-                <div className="text-xs font-semibold tracking-widest text-[#10b981] mb-1 uppercase">
+                <div className="text-xs font-semibold tracking-widest text-jade mb-1 uppercase">
                   02 / PATHOGEN FORECASTS
                 </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                <h3 className="text-3xl md:text-4xl font-bold text-canvas leading-tight">
                   Predict Diseases
                 </h3>
-                <p className="text-sm md:text-base text-white/60 leading-relaxed font-light max-w-sm">
+                <p className="text-sm md:text-base text-canvas/60 leading-relaxed font-light max-w-sm">
                   AI models analyze leaf wetness and thermal shifts to predict apple scab and blight outbreaks 48 hours before they spread.
                 </p>
 
                 {/* Minimal Threat Badge */}
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-red-500/25 bg-red-500/5 w-fit">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-[10px] font-bold text-white/80 tracking-wider uppercase font-mono">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-honey/25 bg-honey/5 w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-honey animate-pulse" />
+                  <span className="text-[10px] font-bold text-canvas/80 tracking-wider uppercase font-mono">
                     Apple Scab Risk: 72% (Critical)
                   </span>
                 </div>
@@ -253,20 +276,20 @@ export default function GridSphereSequence({
                 style={{ opacity: opacity4, y: y4 }}
                 className="absolute left-6 md:left-12 bottom-[22%] max-w-sm md:max-w-md flex flex-col gap-4"
               >
-                <div className="text-xs font-semibold tracking-widest text-[#10b981] mb-1 uppercase">
+                <div className="text-xs font-semibold tracking-widest text-jade mb-1 uppercase">
                   03 / ACTIONABLE ADVISORY
                 </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                <h3 className="text-3xl md:text-4xl font-bold text-canvas leading-tight">
                   Smart Mobile Alerts
                 </h3>
-                <p className="text-sm md:text-base text-white/60 leading-relaxed font-light">
+                <p className="text-sm md:text-base text-canvas/60 leading-relaxed font-light">
                   Receive direct recommendation alerts on your phone. Delay watering or target spray treatments strictly based on real-time needs.
                 </p>
 
                 {/* Minimal Notification Badge */}
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/25 bg-amber-500/5 w-fit">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                  <span className="text-[10px] font-bold text-white/80 tracking-wider uppercase font-mono">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-amber/25 bg-amber/5 w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse" />
+                  <span className="text-[10px] font-bold text-canvas/80 tracking-wider uppercase font-mono">
                     Irrigation AI: Rain expected. Postpone watering.
                   </span>
                 </div>
@@ -277,28 +300,28 @@ export default function GridSphereSequence({
                 style={{ opacity: opacity5, y: y5 }}
                 className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
               >
-                <div className="text-xs md:text-sm font-semibold tracking-[0.4em] text-[#10b981] mb-4 uppercase">
+                <div className="text-xs md:text-sm font-semibold tracking-[0.4em] text-jade mb-4 uppercase">
                   04 / YIELD SECURITY
                 </div>
-                <h2 className="text-4xl md:text-7xl font-black tracking-tight text-white mb-6 uppercase">
+                <h2 className="text-4xl md:text-7xl font-black tracking-tight text-canvas mb-6 uppercase">
                   MAXIMIZE PROFIT
                 </h2>
-                <p className="text-base md:text-xl text-white/60 max-w-xl font-light leading-relaxed mb-8">
+                <p className="text-base md:text-xl text-canvas/60 max-w-xl font-light leading-relaxed mb-8">
                   Deploying GridSphere eliminates traditional guesswork, guaranteeing crop safety and resource savings season after season.
                 </p>
 
                 <div className="flex gap-4 flex-wrap justify-center max-w-lg">
-                  <div className="px-5 py-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center">
-                    <span className="text-2xl font-bold text-[#10b981]">30%</span>
-                    <span className="text-[10px] text-white/40 tracking-wider uppercase font-semibold mt-0.5">Pesticide Savings</span>
+                  <div className="px-5 py-3 rounded-2xl border border-canvas/10 bg-canvas/5 backdrop-blur-md flex flex-col items-center">
+                    <span className="text-2xl font-bold text-jade">30%</span>
+                    <span className="text-[10px] text-canvas/40 tracking-wider uppercase font-semibold mt-0.5">Pesticide Savings</span>
                   </div>
-                  <div className="px-5 py-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center">
-                    <span className="text-2xl font-bold text-[#10b981]">50%</span>
-                    <span className="text-[10px] text-white/40 tracking-wider uppercase font-semibold mt-0.5">Increased Profit</span>
+                  <div className="px-5 py-3 rounded-2xl border border-canvas/10 bg-canvas/5 backdrop-blur-md flex flex-col items-center">
+                    <span className="text-2xl font-bold text-jade">50%</span>
+                    <span className="text-[10px] text-canvas/40 tracking-wider uppercase font-semibold mt-0.5">Increased Profit</span>
                   </div>
-                  <div className="px-5 py-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md flex flex-col items-center">
-                    <span className="text-2xl font-bold text-[#10b981]">15%</span>
-                    <span className="text-[10px] text-white/40 tracking-wider uppercase font-semibold mt-0.5">Yield Increase</span>
+                  <div className="px-5 py-3 rounded-2xl border border-canvas/10 bg-canvas/5 backdrop-blur-md flex flex-col items-center">
+                    <span className="text-2xl font-bold text-jade">15%</span>
+                    <span className="text-[10px] text-canvas/40 tracking-wider uppercase font-semibold mt-0.5">Yield Increase</span>
                   </div>
                 </div>
               </motion.div>
@@ -330,30 +353,30 @@ export default function GridSphereSequence({
                 className="w-full h-full object-contain relative z-10"
               />
               {/* Subtle outer sweep effect */}
-              <motion.div 
+              <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-4 rounded-full border border-white/5 border-t-white/30"
+                className="absolute -inset-4 rounded-full border border-canvas/5 border-t-canvas/30"
               />
             </div>
 
             <motion.h2
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-lg md:text-xl font-bold tracking-widest text-white mb-4 uppercase"
+              className="text-lg md:text-xl font-bold tracking-widest text-canvas mb-4 uppercase"
             >
               PRELOADING SEQUENCE
             </motion.h2>
 
-            <div className="w-56 h-[2px] bg-white/10 rounded-full overflow-hidden relative">
+            <div className="w-56 h-[2px] bg-canvas/10 rounded-full overflow-hidden relative">
               <motion.div
-                className="h-full bg-[#10b981]"
+                className="h-full bg-jade"
                 style={{ width: `${loadProgress}%` }}
                 layoutId="progressBar"
               />
             </div>
 
-            <p className="mt-3 text-white/40 text-xs font-semibold tracking-widest uppercase">
+            <p className="mt-3 text-canvas/40 text-xs font-semibold tracking-widest uppercase">
               {loadProgress}% COMPLETED
             </p>
           </motion.div>

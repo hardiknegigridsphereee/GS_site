@@ -9,6 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        canvas: "#fcf8ec",
+        honey: "#fdca89",
+        amber: "#cbb27a",
+        jade: "#2a7f5e",
+        evergreen: "#132f20",
         spotify: {
           black: "#191414",
           green: "#1DB954",

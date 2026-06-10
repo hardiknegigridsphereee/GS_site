@@ -42,17 +42,17 @@ export default function TrustLogos() {
   }, []);
 
   return (
-    <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-spotify-card border border-white/5 md:rounded-[48px] relative z-10 shadow-2xl shadow-black/50">
+    <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-spotify-card border border-canvas/5 md:rounded-[48px] relative z-10 shadow-2xl shadow-black/50">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
         
         {/* Left Side: Testimonials */}
         <div className="flex-1">
           {/* Testimonials Title */}
           <div className="text-left mb-12">
-            <div className="text-xs font-bold tracking-[0.3em] text-[#10b981] uppercase mb-4">
+            <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase mb-4">
               Grower Feedback
             </div>
-            <h2 className="text-2xl md:text-4xl font-black tracking-tight text-white uppercase leading-tight">
+            <h2 className="text-2xl md:text-4xl font-black tracking-tight text-canvas uppercase leading-tight">
               Trusted in the Field
             </h2>
           </div>
@@ -66,15 +66,15 @@ export default function TrustLogos() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
-                className="p-8 bg-black/40 border border-white/5 rounded-3xl flex flex-col justify-between relative"
+                className="p-8 bg-black/40 border border-canvas/5 rounded-3xl flex flex-col justify-between relative"
               >
-                <Quote className="w-10 h-10 text-[#10b981]/10 absolute top-6 right-8 pointer-events-none" />
+                <Quote className="w-10 h-10 text-jade/10 absolute top-6 right-8 pointer-events-none" />
                 <p className="text-sm md:text-base text-spotify-textSec leading-relaxed font-light italic mb-8 relative z-10">
                   "{t.quote}"
                 </p>
                 <div>
-                  <h4 className="text-base font-bold text-white uppercase tracking-wide">{t.author}</h4>
-                  <p className="text-xs text-[#10b981] font-semibold">{t.location}</p>
+                  <h4 className="text-base font-bold text-canvas uppercase tracking-wide">{t.author}</h4>
+                  <p className="text-xs text-jade font-semibold">{t.location}</p>
                 </div>
               </motion.div>
             ))}
@@ -83,11 +83,11 @@ export default function TrustLogos() {
 
         {/* Right Side: Certification Loop Card */}
         <div className="w-full lg:w-[400px] shrink-0 flex flex-col justify-start">
-          <div className="text-xs font-bold tracking-[0.3em] text-white/50 uppercase mb-8 lg:text-right text-center">
+          <div className="text-xs font-bold tracking-[0.3em] text-canvas/50 uppercase mb-8 lg:text-right text-center">
             Recognitions & Accreditations
           </div>
           
-          <div className="relative w-full aspect-[4/3] bg-white border border-white/10 rounded-[40px] overflow-hidden shadow-2xl shadow-black/50 flex items-center justify-center p-8 group">
+          <div className="relative w-full aspect-[4/3] bg-canvas border border-canvas/10 rounded-[40px] overflow-hidden shadow-2xl shadow-black/50 flex items-center justify-center p-8 group">
             {/* Subtle inner shadow for depth */}
             <div className="absolute inset-0 shadow-inner pointer-events-none z-20 rounded-[40px]" />
             <AnimatePresence mode="wait">

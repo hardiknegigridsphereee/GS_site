@@ -8,14 +8,14 @@ import TrustLogos from "@/components/TrustLogos";
 
 export default function AboutPage() {
   return (
-    <main className="relative bg-[#050505] min-h-screen text-white">
+    <main className="relative bg-[#050505] min-h-screen text-canvas">
       <Header />
 
       {/* Hero Header */}
       <section className="py-24 px-6 md:px-12 text-center max-w-4xl mx-auto relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#10b981]/5 blur-[90px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-jade/5 blur-[90px] rounded-full pointer-events-none" />
         <div className="relative z-10 space-y-6">
-          <div className="text-xs font-bold tracking-[0.3em] text-[#10b981] uppercase">
+          <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase">
             About Our Company
           </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase leading-none">

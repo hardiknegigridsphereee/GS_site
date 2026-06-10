@@ -453,7 +453,7 @@ export default function ScrollAssembly({
           <directionalLight
             position={[-5, 5, 3]}
             intensity={0.8}
-            color="#10b981"
+            color="#2a7f5e"
           />
 
           <pointLight
@@ -491,7 +491,7 @@ export default function ScrollAssembly({
 
               padding: "10px 22px",
 
-              color: "#10b981",
+              color: "#2a7f5e",
 
               fontSize: "13px",
 

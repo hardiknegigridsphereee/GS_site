@@ -33,16 +33,16 @@ const onboardingSteps: Step[] = [
 
 export default function WhoWeAre() {
   return (
-    <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-spotify-card border border-white/5 md:rounded-[48px] relative z-10 overflow-hidden shadow-2xl shadow-black/50">
+    <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-spotify-card border border-canvas/5 md:rounded-[48px] relative z-10 overflow-hidden shadow-2xl shadow-black/50">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-20">
           <div className="max-w-3xl">
-            <div className="text-sm md:text-lg font-black tracking-[0.2em] text-[#10b981] uppercase mb-4">
+            <div className="text-sm md:text-lg font-black tracking-[0.2em] text-jade uppercase mb-4">
               Indian Agri-Tech Innovators
             </div>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white leading-tight uppercase">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight text-canvas leading-tight uppercase">
               Your Apple Orchard's Guardian
             </h2>
           </div>
@@ -56,7 +56,7 @@ export default function WhoWeAre() {
         {/* Steps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
           {/* Subtle joining horizontal line on desktop */}
-          <div className="absolute top-[32px] left-[5%] right-[5%] h-[1px] bg-white/5 hidden md:block z-0" />
+          <div className="absolute top-[32px] left-[5%] right-[5%] h-[1px] bg-canvas/5 hidden md:block z-0" />
           
           {onboardingSteps.map((step, idx) => (
             <motion.div
@@ -68,14 +68,14 @@ export default function WhoWeAre() {
               className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left group"
             >
               {/* Step indicator bubble */}
-              <div className="w-16 h-16 rounded-full bg-[#10b981] flex items-center justify-center mb-6 shadow-lg shadow-[#10b981]/25 group-hover:scale-105 transition-transform duration-300">
+              <div className="w-16 h-16 rounded-full bg-jade flex items-center justify-center mb-6 shadow-lg shadow-jade/25 group-hover:scale-105 transition-transform duration-300">
                 {step.icon}
               </div>
               
-              <div className="text-xs md:text-sm font-black tracking-widest text-[#10b981] mb-2 uppercase font-mono">
+              <div className="text-xs md:text-sm font-black tracking-widest text-jade mb-2 uppercase font-mono">
                 Step {step.number}
               </div>
-              <h3 className="text-xl md:text-2xl font-black text-white mb-4 uppercase group-hover:text-[#10b981] transition-colors leading-tight">
+              <h3 className="text-xl md:text-2xl font-black text-canvas mb-4 uppercase group-hover:text-jade transition-colors leading-tight">
                 {step.title}
               </h3>
               <p className="text-sm md:text-base text-spotify-textSec leading-relaxed font-light max-w-sm">

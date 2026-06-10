@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans bg-spotify-black text-white antialiased elementor-kit-660`}>
+      <body className={`${inter.variable} font-sans bg-spotify-black text-canvas antialiased elementor-kit-660`}>
         {children}
       </body>
     </html>

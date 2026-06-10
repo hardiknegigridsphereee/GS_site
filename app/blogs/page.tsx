@@ -39,14 +39,14 @@ const blogs: BlogPost[] = [
 
 export default function BlogsPage() {
   return (
-    <main className="relative bg-[#050505] min-h-screen text-white">
+    <main className="relative bg-[#050505] min-h-screen text-canvas">
       <Header />
 
       {/* Hero Header */}
       <section className="py-24 px-6 md:px-12 text-center max-w-4xl mx-auto relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#10b981]/5 blur-[90px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-jade/5 blur-[90px] rounded-full pointer-events-none" />
         <div className="relative z-10 space-y-6">
-          <div className="text-xs font-bold tracking-[0.3em] text-[#10b981] uppercase">
+          <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase">
             Agronomy Resources
           </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase leading-none">
@@ -64,14 +64,14 @@ export default function BlogsPage() {
           {blogs.map((post) => (
             <article 
               key={post.title} 
-              className="bg-black/40 border border-white/5 rounded-3xl overflow-hidden hover:border-[#10b981]/20 transition-all duration-300 flex flex-col justify-between group"
+              className="bg-black/40 border border-canvas/5 rounded-3xl overflow-hidden hover:border-jade/20 transition-all duration-300 flex flex-col justify-between group"
             >
               <div className="p-6 md:p-8 space-y-4">
-                <span className="text-[9px] font-bold tracking-widest text-[#10b981] bg-[#10b981]/10 px-3 py-1 rounded-full uppercase inline-block">
+                <span className="text-[9px] font-bold tracking-widest text-jade bg-jade/10 px-3 py-1 rounded-full uppercase inline-block">
                   {post.category}
                 </span>
                 
-                <h3 className="text-xl font-bold text-white group-hover:text-[#10b981] transition-colors leading-tight">
+                <h3 className="text-xl font-bold text-canvas group-hover:text-jade transition-colors leading-tight">
                   {post.title}
                 </h3>
                 
@@ -80,13 +80,13 @@ export default function BlogsPage() {
                 </p>
               </div>
 
-              <div className="p-6 md:p-8 border-t border-white/5 flex items-center justify-between text-[11px] text-white/40">
+              <div className="p-6 md:p-8 border-t border-canvas/5 flex items-center justify-between text-[11px] text-canvas/40">
                 <div className="flex gap-4 font-mono">
                   <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {post.date}</span>
                   <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" /> {post.author}</span>
                 </div>
                 
-                <span className="text-[#10b981] font-bold uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                <span className="text-jade font-bold uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                   Read <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>

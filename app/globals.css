@@ -6,7 +6,7 @@
   --background: #050505;
   --foreground: rgba(255, 255, 255, 0.9);
   --text-muted: rgba(255, 255, 255, 0.6);
-  --accent: #10b981;
+  --accent: #2a7f5e;
 
   /* Desktop Typography Tokens */
   --e-global-typography-primary-font-size: 54px;
@@ -84,7 +84,7 @@ body {
 
 @layer base {
   h1, h2, h3 {
-    @apply tracking-tight font-bold text-white/90;
+    @apply tracking-tight font-bold text-canvas/90;
   }
 }
 
