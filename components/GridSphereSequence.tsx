@@ -25,9 +25,9 @@ export default function GridSphereSequence({
 
   // Smooth the scroll progress for a premium, buttery-smooth transition feel
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 26,
-    restDelta: 0.0005,
+    stiffness: 45,
+    damping: 18,
+    restDelta: 0.0001,
   });
 
   // Map scroll progress (0 to 1) to frame indices (0 to frameCount - 1)
@@ -54,7 +54,7 @@ export default function GridSphereSequence({
   const opacity5 = useTransform(smoothProgress, [0.88, 0.92, 1.0], [0, 1, 1]);
   const y5 = useTransform(smoothProgress, [0.88, 0.92, 1.0], [30, 0, 0]);
 
-  // Glow Animation: Brightens and scales up when the product explodes/assembles (middle of the sequence)
+  // Glow Animation: Brightens and scales up when the product explodes/assembles (middle of the final_one)
   const glowOpacity = useTransform(smoothProgress, [0, 0.2, 0.5, 0.8, 1.0], [0.2, 0.8, 1, 0.8, 0.2]);
   const glowScale = useTransform(smoothProgress, [0, 0.5, 1.0], [0.8, 1.1, 0.8]);
 
@@ -69,7 +69,7 @@ export default function GridSphereSequence({
       for (let i = 0; i < frameCount; i++) {
         const img = new Image();
         const frameNumber = (i + 1).toString().padStart(3, "0");
-        img.src = `/sequence/ezgif-frame-${frameNumber}.jpg`;
+        img.src = `/final_one/ezgif-frame-${frameNumber}.jpg`;
 
         const onFrameProcessed = () => {
           loadedCount++;
@@ -109,7 +109,7 @@ export default function GridSphereSequence({
       const cropBottomPercent = 0.06;
       const width = firstImg.naturalWidth || firstImg.width || 1920;
       const height = firstImg.naturalHeight || firstImg.height || 1080;
-      
+
       // High-DPI (Retina) display support for maximum premium sharpness
       const dpr = window.devicePixelRatio || 1;
       canvas.width = width * dpr;
@@ -127,6 +127,10 @@ export default function GridSphereSequence({
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
+    // Improve texture quality
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
 
     const render = () => {
       const currentIndex = Math.min(Math.floor(frameIndex.get()), frameCount - 1);
@@ -172,18 +176,33 @@ export default function GridSphereSequence({
 
   return (
     <div ref={containerRef} className="relative h-[500vh] bg-[#050505]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center relative">
-        
-        {/* Soft white background glow that pulses and scales when product assembles/explodes */}
-        <motion.div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[600px] h-[400px] md:h-[600px] rounded-full pointer-events-none z-0"
-          style={{ 
-            background: 'radial-gradient(circle, rgba(19,47,32,0.8) 0%, rgba(19,47,32,0) 70%)',
-            filter: 'blur(60px)',
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center relative bg-[#050505]">
+
+        {/* Premium Studio Backlight: Multi-layered glow that pulses and scales */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] md:w-[800px] h-[500px] md:h-[800px] rounded-full pointer-events-none z-0"
+          style={{
+            background: 'radial-gradient(circle, rgba(42,127,94,0.3) 0%, rgba(19,47,32,0.5) 40%, rgba(5,5,5,0) 70%)',
+            filter: 'blur(80px)',
+            mixBlendMode: 'screen',
             opacity: glowOpacity,
             scale: glowScale
           }}
         />
+        {/* Inner bright core for the glow */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] md:w-[300px] h-[200px] md:h-[300px] rounded-full pointer-events-none z-0"
+          style={{
+            background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%)',
+            filter: 'blur(40px)',
+            mixBlendMode: 'overlay',
+            opacity: glowOpacity,
+            scale: glowScale
+          }}
+        />
+
+        {/* Cinematic Vignette Overlay to frame the product beautifully */}
+        <div className="absolute inset-0 pointer-events-none z-0" style={{ background: 'radial-gradient(circle at center, transparent 30%, #050505 100%)' }} />
 
         {/* Sequence canvas */}
         <canvas
@@ -192,9 +211,9 @@ export default function GridSphereSequence({
           style={{
             maxWidth: "100vw",
             maxHeight: "100vh",
-            mixBlendMode: "lighten", // More premium than 'screen', preserves solid darks
-            filter: "contrast(1.05) drop-shadow(0px 10px 40px rgba(19,47,32,0.4))", // Subtle cinematic contrast and depth
-            imageRendering: "high-quality",
+            mixBlendMode: "lighten",
+            // Deep contrast and high saturation to make the product textures pop, without washing out with brightness
+            filter: "contrast(1.45) saturate(1.5) drop-shadow(0px 30px 60px rgba(0,0,0,0.8)) drop-shadow(0px 0px 40px rgba(42,127,94,0.4))",
             transform: "translateZ(0)",
             willChange: "transform, opacity"
           }}

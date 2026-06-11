@@ -94,7 +94,7 @@ body {
 }
 
 /* Hide VEO watermark */
-.sequence-container {
+.final_one-container {
   mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
 }

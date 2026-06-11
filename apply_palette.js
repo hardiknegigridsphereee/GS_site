@@ -43,6 +43,9 @@ dirs.forEach(dir => {
                 content = content.replace(/#10b981/g, '#2a7f5e');
             }
 
+            // Replace last_seq with final_one
+            content = content.replace(/last_seq/g, 'final_one');
+
             // Glow specific replace in GridSphereSequence
             if (filePath.includes('GridSphereSequence.tsx')) {
                 content = content.replace(
