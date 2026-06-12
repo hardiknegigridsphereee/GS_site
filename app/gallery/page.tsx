@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 
-// Array of images from 1.jpg to 9.jpg
+// Array of images from 1.webp to 9.webp
 const galleryImages = Array.from({ length: 9 }, (_, i) => `/gallery/${i + 1}.jpg`);
 
 export default function GalleryPage() {

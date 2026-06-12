@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Cpu, DollarSign, Sprout, HeartHandshake } from "lucide-react";
 
 interface CardItem {
@@ -53,7 +53,7 @@ export default function WhyChooseUs() {
         {/* Advantage Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {advantages.map((item, idx) => (
-            <motion.div
+            <m.div
               key={item.title}
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -72,7 +72,7 @@ export default function WhyChooseUs() {
                   {item.description}
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
@@ -80,3 +80,4 @@ export default function WhyChooseUs() {
     </section>
   );
 }
+

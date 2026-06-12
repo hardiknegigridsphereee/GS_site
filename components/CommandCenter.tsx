@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { 
   Activity, 
   Thermometer, 
@@ -181,7 +181,7 @@ export default function CommandCenter() {
                       className="stroke-white/5 stroke-[6]"
                       fill="transparent"
                     />
-                    <motion.circle 
+                    <m.circle 
                       cx="72" 
                       cy="72" 
                       r="64" 
@@ -276,7 +276,7 @@ export default function CommandCenter() {
                       <span className={`font-bold ${block.appleScabRisk > 50 ? "text-red-400" : "text-canvas/60"}`}>{block.appleScabRisk}% Risk</span>
                     </div>
                     <div className="w-full bg-canvas/5 h-2 rounded-full overflow-hidden">
-                      <motion.div 
+                      <m.div 
                         className={`h-full rounded-full ${block.appleScabRisk > 50 ? "bg-honey" : "bg-jade"}`}
                         initial={{ width: 0 }}
                         animate={{ width: `${block.appleScabRisk}%` }}
@@ -292,7 +292,7 @@ export default function CommandCenter() {
                       <span className={`font-bold ${block.fireBlightRisk > 40 ? "text-amber-400" : "text-canvas/60"}`}>{block.fireBlightRisk}% Risk</span>
                     </div>
                     <div className="w-full bg-canvas/5 h-2 rounded-full overflow-hidden">
-                      <motion.div 
+                      <m.div 
                         className={`h-full rounded-full ${block.fireBlightRisk > 40 ? "bg-amber" : "bg-jade"}`}
                         initial={{ width: 0 }}
                         animate={{ width: `${block.fireBlightRisk}%` }}
@@ -308,7 +308,7 @@ export default function CommandCenter() {
                       <span className="font-bold text-canvas/60">{block.powderyMildewRisk}% Risk</span>
                     </div>
                     <div className="w-full bg-canvas/5 h-2 rounded-full overflow-hidden">
-                      <motion.div 
+                      <m.div 
                         className="h-full rounded-full bg-jade"
                         initial={{ width: 0 }}
                         animate={{ width: `${block.powderyMildewRisk}%` }}
@@ -358,7 +358,7 @@ export default function CommandCenter() {
                   <div className="absolute left-[38%] right-[42%] top-0 bottom-0 bg-jade/20 border-l border-r border-jade/30 z-10 pointer-events-none" />
                   
                   {/* Indicator bar */}
-                  <motion.div 
+                  <m.div 
                     className={`h-full rounded-full ${block.soilMoistureColor}`}
                     initial={{ width: 0 }}
                     animate={{ width: `${block.soilMoisture}%` }}
@@ -402,7 +402,7 @@ export default function CommandCenter() {
 
                 <div className="text-xs text-canvas/80 leading-relaxed font-mono mt-3 text-left">
                   <AnimatePresence mode="wait">
-                    <motion.p
+                    <m.p
                       key={block.id}
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -410,7 +410,7 @@ export default function CommandCenter() {
                       transition={{ duration: 0.3 }}
                     >
                       &gt; {block.recommendation}
-                    </motion.p>
+                    </m.p>
                   </AnimatePresence>
                 </div>
               </div>
@@ -430,3 +430,4 @@ export default function CommandCenter() {
     </section>
   );
 }
+

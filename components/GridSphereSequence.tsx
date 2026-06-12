@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useScroll, useTransform, useSpring, motion } from "framer-motion";
+import { useScroll, useTransform, useSpring, m } from "framer-motion";
 
 interface GridSphereSequenceProps {
   frameCount?: number;
@@ -23,12 +23,8 @@ export default function GridSphereSequence({
     offset: ["start start", "end end"],
   });
 
-  // Smooth the scroll progress for a premium, buttery-smooth transition feel
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 45,
-    damping: 18,
-    restDelta: 0.0001,
-  });
+  // We removed useSpring here for Lighthouse testing because Lenis already handles scroll smoothing.
+  const smoothProgress = scrollYProgress;
 
   // Map scroll progress (0 to 1) to frame indices (0 to frameCount - 1)
   const frameIndex = useTransform(smoothProgress, [0, 1], [0, frameCount - 1]);
@@ -60,43 +56,66 @@ export default function GridSphereSequence({
 
   const lastRenderedIndex = useRef<number>(-1);
 
-  // Preload images with off-thread decoding
+  // Preload images with off-thread decoding and progressive loading
   useEffect(() => {
-    let loadedCount = 0;
-    const loadedImages: HTMLImageElement[] = [];
+    const loadedImages: HTMLImageElement[] = new Array(frameCount);
+    const INITIAL_FRAMES = 2;
+    let totalLoadedCount = 0;
 
-    const preloadImages = () => {
-      for (let i = 0; i < frameCount; i++) {
+    const loadFrame = (index: number): Promise<void> => {
+      return new Promise((resolve) => {
         const img = new Image();
-        const frameNumber = (i + 1).toString().padStart(3, "0");
-        img.src = `/final_one/ezgif-frame-${frameNumber}.jpg`;
-
-        const onFrameProcessed = () => {
-          loadedCount++;
-          setLoadProgress(Math.floor((loadedCount / frameCount) * 100));
-          if (loadedCount === frameCount) {
-            setImages([...loadedImages]);
-            setIsLoading(false);
-            onLoadComplete?.();
-          }
+        const frameNumber = (index + 1).toString().padStart(3, "0");
+        
+        const onProcessed = () => {
+          totalLoadedCount++;
+          setLoadProgress(Math.floor((totalLoadedCount / frameCount) * 100));
+          resolve();
         };
 
         img.onload = () => {
           if ("decode" in img) {
-            img.decode()
-              .then(onFrameProcessed)
-              .catch(onFrameProcessed);
+            img.decode().then(onProcessed).catch(onProcessed);
           } else {
-            onFrameProcessed();
+            onProcessed();
           }
         };
+        img.onerror = onProcessed;
+        
+        loadedImages[index] = img;
+        img.src = `/final_one/ezgif-frame-${frameNumber}.webp`;
+      });
+    };
 
-        img.onerror = onFrameProcessed; // Safe fallback to avoid loading screen lock
-        loadedImages[i] = img;
+    const preloadSequence = async () => {
+      // 1. Prioritize and await the first few frames
+      const initialPromises = [];
+      for (let i = 0; i < Math.min(INITIAL_FRAMES, frameCount); i++) {
+        initialPromises.push(loadFrame(i));
+      }
+      await Promise.all(initialPromises);
+      
+      // The hero is ready to show!
+      setImages([...loadedImages]);
+      setIsLoading(false);
+      onLoadComplete?.();
+
+      // 2. Silently load the rest of the frames in the background in small batches 
+      // so we don't choke the browser's CPU and network with 238 parallel WebP decode tasks.
+      const BATCH_SIZE = 5;
+      for (let i = INITIAL_FRAMES; i < frameCount; i += BATCH_SIZE) {
+        const batch = [];
+        for (let j = 0; j < BATCH_SIZE && i + j < frameCount; j++) {
+          batch.push(loadFrame(i + j));
+        }
+        await Promise.all(batch);
+        
+        // Update images state after each batch
+        setImages([...loadedImages]);
       }
     };
 
-    preloadImages();
+    preloadSequence();
   }, [frameCount, onLoadComplete]);
 
   // Set canvas resolution once images are loaded
@@ -110,8 +129,8 @@ export default function GridSphereSequence({
       const width = firstImg.naturalWidth || firstImg.width || 1920;
       const height = firstImg.naturalHeight || firstImg.height || 1080;
 
-      // High-DPI (Retina) display support for maximum premium sharpness
-      const dpr = window.devicePixelRatio || 1;
+      // High-DPI (Retina) display support for maximum premium sharpness, capped at 2x for performance
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = width * dpr;
       canvas.height = height * (1 - cropBottomPercent) * dpr;
 
@@ -175,11 +194,11 @@ export default function GridSphereSequence({
   }, [images, frameIndex, frameCount]);
 
   return (
-    <div ref={containerRef} className="relative h-[500vh] bg-[#050505]">
+    <div ref={containerRef} className="relative h-[500vh] bg-[#050505]" style={{ position: "relative" }}>
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center relative bg-[#050505]">
 
         {/* Premium Studio Backlight: Multi-layered glow that pulses and scales */}
-        <motion.div
+        <m.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] md:w-[800px] h-[500px] md:h-[800px] rounded-full pointer-events-none z-0"
           style={{
             background: 'radial-gradient(circle, rgba(42,127,94,0.3) 0%, rgba(19,47,32,0.5) 40%, rgba(5,5,5,0) 70%)',
@@ -190,7 +209,7 @@ export default function GridSphereSequence({
           }}
         />
         {/* Inner bright core for the glow */}
-        <motion.div
+        <m.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] md:w-[300px] h-[200px] md:h-[300px] rounded-full pointer-events-none z-0"
           style={{
             background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%)',
@@ -213,7 +232,7 @@ export default function GridSphereSequence({
             maxHeight: "100vh",
             mixBlendMode: "lighten",
             // Deep contrast and high saturation to make the product textures pop, without washing out with brightness
-            filter: "contrast(1.45) saturate(1.5) drop-shadow(0px 30px 60px rgba(0,0,0,0.8)) drop-shadow(0px 0px 40px rgba(42,127,94,0.4))",
+            filter: "contrast(1.45) saturate(1.5)",
             transform: "translateZ(0)",
             willChange: "transform, opacity"
           }}
@@ -223,7 +242,7 @@ export default function GridSphereSequence({
           <div className="absolute inset-0 pointer-events-none z-10">
             <div className="relative w-full h-full max-w-[1800px] mx-auto px-8 md:px-24 flex items-center justify-center">
               {/* Intro Title */}
-              <motion.div
+              <m.div
                 style={{ opacity: opacity1, y: y1 }}
                 className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
               >
@@ -240,10 +259,10 @@ export default function GridSphereSequence({
                   <span>Scroll to explore outcomes</span>
                   <span className="text-sm">↓</span>
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Caption 2: Weather Instruments & Microclimate Data */}
-              <motion.div
+              <m.div
                 style={{ opacity: opacity2, y: y2 }}
                 className="absolute left-6 md:left-12 top-[22%] max-w-sm md:max-w-md flex flex-col gap-4"
               >
@@ -264,10 +283,10 @@ export default function GridSphereSequence({
                     Sensors active: 22.4°C | 68% RH
                   </span>
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Caption 3: Disease Engine & Analysis */}
-              <motion.div
+              <m.div
                 style={{ opacity: opacity3, y: y3 }}
                 className="absolute right-6 md:right-12 top-[30%] max-w-sm md:max-w-md text-right flex flex-col items-end gap-4"
               >
@@ -288,10 +307,10 @@ export default function GridSphereSequence({
                     Apple Scab Risk: 72% (Critical)
                   </span>
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Caption 4: Farmer Alerts */}
-              <motion.div
+              <m.div
                 style={{ opacity: opacity4, y: y4 }}
                 className="absolute left-6 md:left-12 bottom-[22%] max-w-sm md:max-w-md flex flex-col gap-4"
               >
@@ -312,10 +331,10 @@ export default function GridSphereSequence({
                     Irrigation AI: Rain expected. Postpone watering.
                   </span>
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Caption 5: Conclusion & Healthier Orchard */}
-              <motion.div
+              <m.div
                 style={{ opacity: opacity5, y: y5 }}
                 className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
               >
@@ -343,7 +362,7 @@ export default function GridSphereSequence({
                     <span className="text-[10px] text-canvas/40 tracking-wider uppercase font-semibold mt-0.5">Yield Increase</span>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
 
             </div>
           </div>
@@ -351,14 +370,14 @@ export default function GridSphereSequence({
 
         {/* Loading Overlay */}
         {isLoading && (
-          <motion.div
+          <m.div
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505]"
           >
             <div className="relative h-24 w-24 mb-8 flex items-center justify-center">
-              <motion.img
-                src="/logo.png"
+              <m.img
+                src="/logo.webp"
                 alt="GridSphere Logo"
                 animate={{
                   opacity: [0.5, 1, 0.5],
@@ -372,23 +391,23 @@ export default function GridSphereSequence({
                 className="w-full h-full object-contain relative z-10"
               />
               {/* Subtle outer sweep effect */}
-              <motion.div
+              <m.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                 className="absolute -inset-4 rounded-full border border-canvas/5 border-t-canvas/30"
               />
             </div>
 
-            <motion.h2
+            <m.h2
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-lg md:text-xl font-bold tracking-widest text-canvas mb-4 uppercase"
             >
               PRELOADING SEQUENCE
-            </motion.h2>
+            </m.h2>
 
             <div className="w-56 h-[2px] bg-canvas/10 rounded-full overflow-hidden relative">
-              <motion.div
+              <m.div
                 className="h-full bg-jade"
                 style={{ width: `${loadProgress}%` }}
                 layoutId="progressBar"
@@ -398,9 +417,10 @@ export default function GridSphereSequence({
             <p className="mt-3 text-canvas/40 text-xs font-semibold tracking-widest uppercase">
               {loadProgress}% COMPLETED
             </p>
-          </motion.div>
+          </m.div>
         )}
       </div>
     </div>
   );
 }
+

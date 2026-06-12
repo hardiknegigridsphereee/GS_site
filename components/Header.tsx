@@ -20,7 +20,7 @@ export default function Header() {
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2.5 group">
         <div className="w-10 h-10 flex items-center justify-center transition-transform duration-300 group-hover:rotate-12">
-          <img src="/logo.png" alt="GridSphere Logo" className="w-full h-full object-contain" />
+          <img src="/logo.webp" alt="GridSphere Logo" className="w-full h-full object-contain" />
         </div>
         <span className="text-3xl md:text-4xl font-black tracking-tighter text-canvas">
           GRID <span className="text-jade">SPHERE</span>

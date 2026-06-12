@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Quote } from "lucide-react";
 
 interface Testimonial {
@@ -24,11 +24,11 @@ const testimonials: Testimonial[] = [
 ];
 
 const certImages = [
-  "/DPIIT.jpeg",
-  "/Graphic era.png",
-  "/TBI.png",
+  "/DPIIT.webp",
+  "/Graphic era.webp",
+  "/TBI.webp",
   "/msme1.webp",
-  "/startup-india-registration-service.png"
+  "/startup-india-registration-service.webp"
 ];
 
 export default function TrustLogos() {
@@ -60,7 +60,7 @@ export default function TrustLogos() {
           {/* Testimonials Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {testimonials.map((t, idx) => (
-              <motion.div
+              <m.div
                 key={t.author}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -76,7 +76,7 @@ export default function TrustLogos() {
                   <h4 className="text-base font-bold text-canvas uppercase tracking-wide">{t.author}</h4>
                   <p className="text-xs text-jade font-semibold">{t.location}</p>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -91,7 +91,7 @@ export default function TrustLogos() {
             {/* Subtle inner shadow for depth */}
             <div className="absolute inset-0 shadow-inner pointer-events-none z-20 rounded-[40px]" />
             <AnimatePresence mode="wait">
-              <motion.img
+              <m.img
                 key={certIndex}
                 src={certImages[certIndex]}
                 initial={{ opacity: 0, scale: 0.95, filter: "blur(8px)" }}
@@ -119,3 +119,4 @@ export default function TrustLogos() {
     </section>
   );
 }
+

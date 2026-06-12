@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 interface LoaderProps {
   progress: number;
@@ -8,7 +8,7 @@ interface LoaderProps {
 
 export default function Loader({ progress }: LoaderProps) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
@@ -16,7 +16,7 @@ export default function Loader({ progress }: LoaderProps) {
     >
       <div className="relative h-48 w-48 mb-8">
         {/* Pulsing Green Circle */}
-        <motion.div
+        <m.div
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.6, 0.3],
@@ -33,16 +33,16 @@ export default function Loader({ progress }: LoaderProps) {
         </div>
       </div>
 
-      <motion.h2 
+      <m.h2 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-2xl font-bold tracking-tight text-canvas mb-2"
       >
         Assembling Grid Sphere...
-      </motion.h2>
+      </m.h2>
       
       <div className="w-64 h-1 bg-canvas/10 rounded-full overflow-hidden">
-        <motion.div 
+        <m.div 
           className="h-full bg-spotify-green"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
@@ -52,6 +52,7 @@ export default function Loader({ progress }: LoaderProps) {
       <p className="mt-4 text-spotify-textSec text-sm font-medium">
         {Math.round(progress)}% Loaded
       </p>
-    </motion.div>
+    </m.div>
   );
 }
+

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { TrendingUp, Droplet, ShieldCheck, Award } from "lucide-react";
 
 interface CounterProps {
@@ -167,3 +167,4 @@ export default function ROISection() {
     </section>
   );
 }
+

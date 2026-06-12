@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ShieldAlert, Droplets, Bug, Bell } from "lucide-react";
 
 interface Feature {
@@ -38,7 +38,7 @@ export default function QuickFeatures() {
       <div className="w-full max-w-[1800px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
           {quickFeatures.map((feature, idx) => (
-            <motion.div
+            <m.div
               key={feature.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -57,10 +57,11 @@ export default function QuickFeatures() {
                   {feature.description}
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
     </section>
   );
 }
+

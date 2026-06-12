@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Sparkles, Hammer, TrendingUp } from "lucide-react";
 
 interface Step {
@@ -59,7 +59,7 @@ export default function WhoWeAre() {
           <div className="absolute top-[32px] left-[5%] right-[5%] h-[1px] bg-canvas/5 hidden md:block z-0" />
           
           {onboardingSteps.map((step, idx) => (
-            <motion.div
+            <m.div
               key={step.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ export default function WhoWeAre() {
               <p className="text-sm md:text-base text-spotify-textSec leading-relaxed font-light max-w-sm">
                 {step.description}
               </p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
@@ -89,3 +89,4 @@ export default function WhoWeAre() {
     </section>
   );
 }
+

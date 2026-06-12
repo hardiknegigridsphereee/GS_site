@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import SmoothScroll from "@/components/SmoothScroll";
+import { LazyMotion, domAnimation } from "framer-motion";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -21,9 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans bg-spotify-black text-canvas antialiased elementor-kit-660`}>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans bg-spotify-black text-canvas antialiased elementor-kit-660`} suppressHydrationWarning>
+        <SmoothScroll>
+          <LazyMotion features={domAnimation}>
+            {children}
+          </LazyMotion>
+        </SmoothScroll>
       </body>
     </html>
   );

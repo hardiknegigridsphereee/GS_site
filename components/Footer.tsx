@@ -24,7 +24,7 @@ export default function Footer() {
         <div className="md:col-span-4 space-y-6">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 flex items-center justify-center">
-              <img src="/logo.png" alt="GridSphere Logo" className="w-full h-full object-contain" />
+              <img src="/logo.webp" alt="GridSphere Logo" className="w-full h-full object-contain" />
             </div>
             <span className="text-xl font-bold tracking-tighter text-canvas">
               GRID <span className="text-jade">SPHERE</span>
