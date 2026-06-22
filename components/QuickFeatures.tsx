@@ -13,7 +13,7 @@ const quickFeatures: Feature[] = [
   {
     icon: <ShieldAlert className="w-6 h-6 text-jade" />,
     title: "Disease Forecast",
-    description: "AI-driven algorithms predict disease outbreaks like Apple Scab 48 hours before they manifest physically."
+    description: "AI-driven algorithms predict disease outbreaks like Fungal Infection 48 hours before they manifest physically."
   },
   {
     icon: <Droplets className="w-6 h-6 text-jade" />,
@@ -34,7 +34,7 @@ const quickFeatures: Feature[] = [
 
 export default function QuickFeatures() {
   return (
-    <section className="my-12 w-full py-16 px-4 md:px-8 xl:px-16 bg-spotify-black border border-canvas/5 md:rounded-[48px] relative z-10 shadow-2xl shadow-black/50">
+    <section className="my-12 w-full py-16 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 shadow-2xl shadow-forest/10">
       <div className="w-full max-w-[1800px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
           {quickFeatures.map((feature, idx) => (
@@ -44,16 +44,16 @@ export default function QuickFeatures() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="p-6 bg-black/30 border border-canvas/5 rounded-3xl hover:border-jade/20 transition-all duration-300 group flex items-start gap-4"
+              className="p-6 bg-white/60 border border-forest/5 rounded-3xl hover:border-jade/20 transition-all duration-300 group flex items-start gap-4"
             >
               <div className="p-3 bg-jade/5 border border-jade/15 rounded-2xl group-hover:bg-jade/10 group-hover:scale-105 transition-all duration-300 flex-shrink-0">
                 {feature.icon}
               </div>
               <div className="space-y-4">
-                <h4 className="text-xl lg:text-2xl font-black text-canvas uppercase group-hover:text-jade transition-colors leading-tight">
+                <h4 className="text-xl lg:text-2xl font-black text-forest uppercase group-hover:text-jade transition-colors leading-tight">
                   {feature.title}
                 </h4>
-                <p className="text-sm md:text-base text-spotify-textSec leading-relaxed font-light">
+                <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light">
                   {feature.description}
                 </p>
               </div>

@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --background: #050505;
-  --foreground: rgba(255, 255, 255, 0.9);
-  --text-muted: rgba(255, 255, 255, 0.6);
+  --background: #F4EFE6;
+  --foreground: #1A3626;
+  --text-muted: rgba(26, 54, 38, 0.6);
   --accent: #2a7f5e;
 
   /* Desktop Typography Tokens */
@@ -69,7 +69,7 @@ body {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(26, 54, 38, 0.1);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -78,13 +78,13 @@ body {
 
 @layer base {
   h1, h2, h3 {
-    @apply tracking-tight font-bold text-canvas/90;
+    @apply tracking-tight font-bold text-forest/90;
   }
 }
 
 /* Custom Utility for background blending */
 .bg-void {
-  background-color: #050505;
+  background-color: #F4EFE6;
 }
 
 /* Hide VEO watermark */
@@ -96,5 +96,5 @@ body {
 /* Selection */
 ::selection {
   background: var(--accent);
-  color: #000;
+  color: #fff;
 }

@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans bg-spotify-black text-canvas antialiased elementor-kit-660`} suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans bg-pearl text-forest antialiased elementor-kit-660`} suppressHydrationWarning>
         <SmoothScroll>
           <LazyMotion features={domAnimation}>
             {children}

@@ -15,7 +15,7 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#050505] min-h-screen text-canvas">
+    <main className="relative bg-pearl min-h-screen text-forest">
       {/* Sticky Header Navigation */}
       <Header />
 
@@ -32,7 +32,7 @@ export default function Home() {
         {/* Indian Agri-Tech Innovators & Onboarding Steps */}
         <WhoWeAre />
 
-        {/* The Smart Orchard Advantage: Dashboard Cockpit */}
+        {/* The Smart Field Advantage: Dashboard Cockpit */}
         <CommandCenter />
 
         {/* Dynamic ROI Metrics & Impact Counters */}

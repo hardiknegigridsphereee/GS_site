@@ -15,15 +15,15 @@ interface BlogPost {
 
 const blogs: BlogPost[] = [
   {
-    title: "Predicting Apple Scab Disease Spores via Leaf Wetness Telemetry",
-    excerpt: "Learn how tracking air temperature in combination with continuous canopy leaf wetness sensors allows orchardists to forecast Venturia inaequalis sporulation 48 hours before visible symptoms form.",
+    title: "Predicting Fungal Infection Disease Spores via Leaf Wetness Telemetry",
+    excerpt: "Learn how tracking air temperature in combination with continuous canopy leaf wetness sensors allows fieldists to forecast Venturia inaequalis sporulation 48 hours before visible symptoms form.",
     date: "June 08, 2026",
     author: "Agronomy Team",
     category: "Pathogen Analytics"
   },
   {
-    title: "Precision Irrigation in Himachali Apple Orchards: A Hydrological Approach",
-    excerpt: "High-density apple varieties require strict Volumetric Water Content (VWC) root tracking. Discrepancies of even 5% moisture can trigger crop stress, resulting in stunted fruit sizing during critical summer months.",
+    title: "Precision Irrigation in Himachali fields: A Hydrological Approach",
+    excerpt: "High-density crop varieties require strict Volumetric Water Content (VWC) root tracking. Discrepancies of even 5% moisture can trigger crop stress, resulting in stunted fruit sizing during critical summer months.",
     date: "May 28, 2026",
     author: "Hydrology Expert",
     category: "Irrigation AI"
@@ -39,7 +39,7 @@ const blogs: BlogPost[] = [
 
 export default function BlogsPage() {
   return (
-    <main className="relative bg-[#050505] min-h-screen text-canvas">
+    <main className="relative bg-pearl min-h-screen text-forest">
       <Header />
 
       {/* Hero Header */}
@@ -50,10 +50,10 @@ export default function BlogsPage() {
             Agronomy Resources
           </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase leading-none">
-            Orchard Intelligence Blogs
+            field Intelligence Blogs
           </h1>
-          <p className="text-lg md:text-xl text-spotify-textSec leading-relaxed font-light max-w-2xl mx-auto">
-            Technical guides and agronomic advice to help apple growers integrate sensor data into profitable on-field routines.
+          <p className="text-lg md:text-xl text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
+            Technical guides and agronomic advice to help farmers integrate sensor data into profitable on-field routines.
           </p>
         </div>
       </section>
@@ -64,23 +64,23 @@ export default function BlogsPage() {
           {blogs.map((post) => (
             <article 
               key={post.title} 
-              className="bg-black/40 border border-canvas/5 rounded-3xl overflow-hidden hover:border-jade/20 transition-all duration-300 flex flex-col justify-between group"
+              className="bg-white/80 border border-forest/5 rounded-3xl overflow-hidden hover:border-jade/20 transition-all duration-300 flex flex-col justify-between group"
             >
               <div className="p-6 md:p-8 space-y-4">
                 <span className="text-[9px] font-bold tracking-widest text-jade bg-jade/10 px-3 py-1 rounded-full uppercase inline-block">
                   {post.category}
                 </span>
                 
-                <h3 className="text-xl font-bold text-canvas group-hover:text-jade transition-colors leading-tight">
+                <h3 className="text-xl font-bold text-forest group-hover:text-jade transition-colors leading-tight">
                   {post.title}
                 </h3>
                 
-                <p className="text-xs text-spotify-textSec leading-relaxed font-light">
+                <p className="text-xs text-forest/70 leading-relaxed font-light">
                   {post.excerpt}
                 </p>
               </div>
 
-              <div className="p-6 md:p-8 border-t border-canvas/5 flex items-center justify-between text-[11px] text-canvas/40">
+              <div className="p-6 md:p-8 border-t border-forest/5 flex items-center justify-between text-[11px] text-forest/40">
                 <div className="flex gap-4 font-mono">
                   <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {post.date}</span>
                   <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" /> {post.author}</span>

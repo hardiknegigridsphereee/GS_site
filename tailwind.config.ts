@@ -14,6 +14,9 @@ const config: Config = {
         amber: "#cbb27a",
         jade: "#2a7f5e",
         evergreen: "#132f20",
+        pearl: "#F4EFE6",
+        sage: "#EBE5D9",
+        forest: "#1A3626",
         spotify: {
           black: "#191414",
           green: "#1DB954",

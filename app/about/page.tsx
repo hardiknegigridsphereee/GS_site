@@ -8,7 +8,7 @@ import TrustLogos from "@/components/TrustLogos";
 
 export default function AboutPage() {
   return (
-    <main className="relative bg-[#050505] min-h-screen text-canvas">
+    <main className="relative bg-pearl min-h-screen text-forest">
       <Header />
 
       {/* Hero Header */}
@@ -21,8 +21,8 @@ export default function AboutPage() {
           <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase leading-none">
             Indian Agri-Tech Innovators
           </h1>
-          <p className="text-lg md:text-xl text-spotify-textSec leading-relaxed font-light max-w-2xl mx-auto">
-            Grid Sphere is pioneering precision agriculture. We combine advanced weather telemetry and specialized machine learning to protect yields and secure the livelihoods of Indian apple growers.
+          <p className="text-lg md:text-xl text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
+            Grid Sphere is pioneering precision agriculture. We combine advanced weather telemetry and specialized machine learning to protect yields and secure the livelihoods of Indian farmers.
           </p>
         </div>
       </section>
