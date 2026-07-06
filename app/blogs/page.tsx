@@ -80,15 +80,9 @@ export default function BlogsPage() {
                 </p>
               </div>
 
-              <div className="p-6 md:p-8 border-t border-forest/5 flex items-center justify-between text-[11px] text-forest/40">
-                <div className="flex gap-4 font-mono">
-                  <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {post.date}</span>
-                  <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" /> {post.author}</span>
-                </div>
-                
-                <span className="text-jade font-bold uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                  Read <ArrowRight className="w-3.5 h-3.5" />
-                </span>
+              <div className="p-6 md:p-8 border-t border-forest/5 flex items-center gap-4 text-[11px] text-forest/40 font-mono">
+                <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {post.date}</span>
+                <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" /> {post.author}</span>
               </div>
             </article>
           ))}

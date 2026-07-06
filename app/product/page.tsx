@@ -3,15 +3,30 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { CloudRain, ShieldCheck, Cpu, Droplet, Sun, Activity, Target, Layers } from "lucide-react";
+import Image from "next/image";
+import {
+  ShieldCheck,
+  Cpu,
+  Activity,
+  Target,
+  Droplet,
+  Sun,
+  Thermometer,
+  Leaf,
+  Gauge,
+  Wind,
+  CloudRain,
+} from "lucide-react";
 
 export default function ProductPage() {
   return (
-    <main className="relative bg-pearl min-h-screen text-forest overflow-hidden">
+    <main className="relative bg-pearl min-h-screen text-forest">
       <Header />
-      
-      {/* Background glow effects */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-jade/5 blur-[120px] rounded-full pointer-events-none" />
+
+      {/* Background glow effects — clipped locally so it doesn't break sticky positioning further down the page */}
+      <div className="absolute top-0 left-0 right-0 h-[500px] overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-jade/5 blur-[120px] rounded-full" />
+      </div>
 
       {/* Hero Section */}
       <section className="py-24 px-6 md:px-12 text-center max-w-5xl mx-auto relative z-10">
@@ -23,11 +38,13 @@ export default function ProductPage() {
           <div className="text-sm md:text-base font-black tracking-[0.3em] text-jade uppercase mb-6">
             Hardware Meets Software
           </div>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight uppercase leading-tight mb-8">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight uppercase leading-tight mb-8 break-words">
             Complete field <br className="hidden md:block" /> Intelligence
           </h1>
           <p className="text-lg md:text-2xl text-forest/70 leading-relaxed font-light max-w-3xl mx-auto">
-            Bridging the gap between the physical master weather array system and its digital interface. Experience seamless integration from raw environmental data to actionable smartphone insights.
+            Bridging the gap between the physical master weather array system and its digital
+            interface. Experience seamless integration from raw environmental data to actionable
+            smartphone insights.
           </p>
         </motion.div>
       </section>
@@ -35,59 +52,24 @@ export default function ProductPage() {
       {/* 3-Column Core Interface Showcase */}
       <section className="py-16 px-4 md:px-8 max-w-[1600px] mx-auto relative z-10">
         <div className="flex flex-col xl:flex-row gap-10 items-center justify-center">
-          
-          {/* Left: Field Protection Interface */}
-          <motion.div 
+          {/* Left: Field Protection Interface (real app screenshot) */}
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="w-full max-w-[380px] xl:w-[350px] bg-pearl border border-forest/10 rounded-[40px] p-6 shadow-2xl shadow-black relative overflow-hidden"
+            className="relative w-full max-w-[380px] xl:w-[350px] aspect-[9/19]"
           >
-            {/* Phone Notch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-3xl" />
-            
-            <div className="mt-8 flex justify-between items-center mb-8">
-              <span className="text-sm font-bold text-forest uppercase tracking-wider">Field Protection</span>
-              <ShieldCheck className="w-5 h-5 text-jade" />
-            </div>
-
-            <div className="space-y-6">
-              {/* Risk Gauge */}
-              <div className="bg-forest/5 rounded-3xl p-6 border border-forest/5 text-center shadow-inner">
-                <span className="text-xs text-forest/50 uppercase tracking-widest font-bold">Pest Activity Risk</span>
-                <div className="relative w-36 h-36 mx-auto mt-5 flex items-center justify-center">
-                  <svg className="w-full h-full transform -rotate-90">
-                    <circle cx="72" cy="72" r="60" className="stroke-white/5 stroke-[10]" fill="transparent" />
-                    <circle cx="72" cy="72" r="60" className="stroke-honey stroke-[10]" fill="transparent" strokeDasharray={377} strokeDashoffset={377 * 0.5} strokeLinecap="round" />
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-4xl font-black text-forest">50%</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Specific Threats */}
-              <div className="space-y-4">
-                <div className="bg-forest/5 rounded-2xl p-5 border border-forest/5">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-sm font-bold">Codling Moth</span>
-                    <span className="text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-1 rounded-md">40% Alert</span>
-                  </div>
-                  <div className="w-full bg-forest/10 h-2 rounded-full overflow-hidden"><div className="bg-amber-400 h-full rounded-full w-[40%]" /></div>
-                </div>
-                <div className="bg-forest/5 rounded-2xl p-5 border border-forest/5">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-sm font-bold">Aphids</span>
-                    <span className="text-xs font-bold text-honey bg-honey/10 px-2 py-1 rounded-md">50% Critical</span>
-                  </div>
-                  <div className="w-full bg-forest/10 h-2 rounded-full overflow-hidden"><div className="bg-honey h-full rounded-full w-[50%]" /></div>
-                </div>
-              </div>
-            </div>
+            <Image
+              src="/product/m1-portrait-scaled.png"
+              alt="Grid Sphere app — Field Protection screen"
+              fill
+              className="object-contain"
+              priority
+            />
           </motion.div>
 
-          {/* Center: Hardware Station Presentation */}
-          <motion.div 
+          {/* Center: Real Hardware Product Shot */}
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -95,104 +77,48 @@ export default function ProductPage() {
           >
             {/* Glowing background */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.15),transparent_60%)] pointer-events-none" />
-            
-            {/* Abstract Station Representation */}
-            <div className="relative z-10 flex flex-col items-center transform transition-transform duration-700 group-hover:scale-105">
-              {/* Anemometer top */}
-              <div className="w-40 h-20 border-b-[6px] border-forest/20 relative flex justify-center">
-                <div className="absolute top-0 w-32 h-1.5 border border-forest/40 animate-spin" style={{ animationDuration: '4s' }} />
-                <div className="w-5 h-full bg-gradient-to-b from-white/80 to-white/20 rounded-t-md shadow-lg" />
-              </div>
-              {/* Rain Gauge */}
-              <div className="w-20 h-16 bg-forest/10 rounded-b-2xl border border-forest/20 mt-3 backdrop-blur-md shadow-lg" />
-              {/* Main Housing */}
-              <div className="w-32 h-56 bg-gradient-to-br from-[#111] to-[#222] border border-forest/20 rounded-[2rem] mt-6 flex flex-col items-center justify-center shadow-[0_0_60px_rgba(16,185,129,0.2)] relative overflow-hidden">
-                <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
-                <Cpu className="w-10 h-10 text-jade mb-3" />
-                <span className="text-xs font-black tracking-[0.2em] uppercase text-forest/60">GridSphere</span>
-                <div className="w-12 h-1 bg-jade/50 rounded-full mt-4" />
-              </div>
-              {/* Pole */}
-              <div className="w-4 h-64 bg-gradient-to-b from-white/30 to-transparent mt-3 rounded-t-full shadow-inner" />
-            </div>
 
-            <div className="absolute bottom-4 text-center bg-white/80 backdrop-blur-md border border-forest/10 px-8 py-4 rounded-3xl">
-              <span className="text-sm font-bold tracking-[0.3em] text-jade uppercase block mb-1">The Master Array</span>
-              <p className="text-xs text-forest/50 max-w-xs mx-auto leading-relaxed">Physical node gathering raw environmental telemetry with aerospace-grade precision.</p>
+            {/* Real product image */}
+            <div className="relative z-10 w-full h-[480px]">
+              <Image
+                src="/product/erasebg-transformed-5.png"
+                alt="GridSphere weather and soil monitoring station"
+                fill
+                priority
+                className="object-contain drop-shadow-2xl transition-transform duration-700 group-hover:scale-105"
+              />
             </div>
           </motion.div>
 
-          {/* Right: Soil Health Interface */}
-          <motion.div 
+          {/* Right: Soil Health Interface (real app screenshot) */}
+          <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="w-full max-w-[380px] xl:w-[350px] bg-pearl border border-forest/10 rounded-[40px] p-6 shadow-2xl shadow-black relative overflow-hidden"
+            className="relative w-full max-w-[380px] xl:w-[350px] aspect-[9/19]"
           >
-            {/* Phone Notch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-3xl" />
-            
-            <div className="mt-8 flex justify-between items-center mb-8">
-              <span className="text-sm font-bold text-forest uppercase tracking-wider">Soil Health</span>
-              <Droplet className="w-5 h-5 text-jade" />
-            </div>
-
-            <div className="space-y-4">
-              {/* Primary Metrics Row */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-jade/10 rounded-3xl p-5 border border-jade/20 text-center">
-                  <span className="text-[10px] text-jade uppercase tracking-widest font-bold">pH Level</span>
-                  <div className="text-3xl font-black text-forest mt-2">6.5</div>
-                </div>
-                <div className="bg-forest/5 rounded-3xl p-5 border border-forest/5 text-center">
-                  <span className="text-[10px] text-forest/50 uppercase tracking-widest font-bold">EC (dS/m)</span>
-                  <div className="text-3xl font-black text-forest mt-2">0.8</div>
-                </div>
-              </div>
-
-              {/* Carbon */}
-              <div className="bg-forest/5 rounded-2xl p-5 border border-forest/5 flex justify-between items-center">
-                <span className="text-xs font-bold text-forest/70 uppercase tracking-wide">Organic Carbon</span>
-                <span className="text-xl font-black text-forest">0.75%</span>
-              </div>
-
-              {/* NPK Breakdown */}
-              <div className="bg-forest/5 rounded-3xl p-5 border border-forest/5 space-y-4">
-                <span className="text-[10px] text-forest/40 uppercase tracking-widest font-bold mb-1 block">Macronutrients (Kg/ha)</span>
-                
-                <div className="flex justify-between items-center bg-white/80 p-3 rounded-xl border border-forest/5">
-                  <span className="text-sm font-bold">Nitrogen (N)</span>
-                  <span className="text-base font-black text-jade">180</span>
-                </div>
-                <div className="flex justify-between items-center bg-white/80 p-3 rounded-xl border border-forest/5">
-                  <span className="text-sm font-bold">Phosphorus (P)</span>
-                  <span className="text-base font-black text-jade">22</span>
-                </div>
-                <div className="flex justify-between items-center bg-white/80 p-3 rounded-xl border border-forest/5">
-                  <span className="text-sm font-bold">Potassium (K)</span>
-                  <span className="text-base font-black text-jade">210</span>
-                </div>
-              </div>
-
-              {/* Micros */}
-              <div className="flex gap-3">
-                <div className="flex-1 bg-forest/5 rounded-2xl py-3 text-center border border-forest/5 text-xs font-bold text-forest/50 uppercase tracking-wide">Calcium</div>
-                <div className="flex-1 bg-forest/5 rounded-2xl py-3 text-center border border-forest/5 text-xs font-bold text-forest/50 uppercase tracking-wide">Magnesium</div>
-              </div>
-
-            </div>
+            <Image
+              src="/product/m5-portrait-scaled.png"
+              alt="Grid Sphere app — Soil Health screen"
+              fill
+              className="object-contain"
+              priority
+            />
           </motion.div>
-
         </div>
       </section>
 
       {/* Core Value Offerings (4 Grid) */}
       <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <div className="text-sm font-bold tracking-[0.3em] text-jade uppercase mb-4">Value Proposition</div>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight uppercase text-forest">Core Value Offerings</h2>
+          <div className="text-sm font-bold tracking-[0.3em] text-jade uppercase mb-4">
+            Value Proposition
+          </div>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tight uppercase text-forest">
+            Core Value Offerings
+          </h2>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-sage border border-forest/5 rounded-[32px] p-8 hover:border-jade/30 transition-all group">
             <div className="p-4 bg-jade/5 rounded-2xl w-fit mb-6 group-hover:scale-110 transition-transform">
@@ -200,7 +126,9 @@ export default function ProductPage() {
             </div>
             <h3 className="text-xl font-bold uppercase mb-3 text-forest tracking-wide">Data Depth</h3>
             <p className="text-sm text-forest/70 leading-relaxed">
-              Capture unprecedented resolution with <strong className="text-forest">7 Weather Parameters</strong> and <strong className="text-forest">14 Soil Parameters</strong> continuously monitored.
+              Capture unprecedented resolution with{" "}
+              <strong className="text-forest">7 Weather Parameters</strong> and{" "}
+              <strong className="text-forest">14 Soil Parameters</strong> continuously monitored.
             </p>
           </div>
           <div className="bg-sage border border-forest/5 rounded-[32px] p-8 hover:border-jade/30 transition-all group">
@@ -209,7 +137,9 @@ export default function ProductPage() {
             </div>
             <h3 className="text-xl font-bold uppercase mb-3 text-forest tracking-wide">Active Defense</h3>
             <p className="text-sm text-forest/70 leading-relaxed">
-              Pre-emptive alerts for <strong className="text-forest">Fungal Protection</strong> and <strong className="text-forest">Pest Protection</strong> before outbreaks structurally manifest.
+              Pre-emptive alerts for <strong className="text-forest">Fungal Protection</strong> and{" "}
+              <strong className="text-forest">Pest Protection</strong> before outbreaks structurally
+              manifest.
             </p>
           </div>
           <div className="bg-sage border border-forest/5 rounded-[32px] p-8 hover:border-jade/30 transition-all group">
@@ -218,7 +148,8 @@ export default function ProductPage() {
             </div>
             <h3 className="text-xl font-bold uppercase mb-3 text-forest tracking-wide">Resource Mgmt</h3>
             <p className="text-sm text-forest/70 leading-relaxed">
-              Achieve precise <strong className="text-forest">Spray Timing</strong> optimizations and strictly monitored <strong className="text-forest">Soil Health</strong> applications.
+              Achieve precise <strong className="text-forest">Spray Timing</strong> optimizations and
+              strictly monitored <strong className="text-forest">Soil Health</strong> applications.
             </p>
           </div>
           <div className="bg-sage border border-forest/5 rounded-[32px] p-8 hover:border-jade/30 transition-all group">
@@ -227,17 +158,18 @@ export default function ProductPage() {
             </div>
             <h3 className="text-xl font-bold uppercase mb-3 text-forest tracking-wide">Core Tech</h3>
             <p className="text-sm text-forest/70 leading-relaxed">
-              Driven by Edge Computing, our predictive models are <strong className="text-forest">Completely AI Enabled</strong> for zero-latency execution.
+              Driven by Edge Computing, our predictive models are{" "}
+              <strong className="text-forest">Completely AI Enabled</strong> for zero-latency execution.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Weather Intelligence Capabilities */}
-      <section className="py-32 px-6 md:px-12 w-full bg-sage border-y border-forest/5 relative z-10 shadow-2xl overflow-hidden">
+      {/* Weather Intelligence Capabilities - FIXED VERSION */}
+      <section className="py-24 px-6 md:px-12 w-full bg-sage border-y border-forest/5 relative z-10">
         <div className="absolute right-0 bottom-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_bottom_right,rgba(16,185,129,0.05),transparent_60%)] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center relative z-10">
+
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:items-start relative z-10">
           <div className="flex-1">
             <div className="text-sm font-bold tracking-[0.2em] text-jade uppercase mb-4 flex items-center gap-2">
               <span className="w-8 h-[2px] bg-jade" /> Microclimate Precision
@@ -245,48 +177,51 @@ export default function ProductPage() {
             <h2 className="text-4xl md:text-5xl font-black tracking-tight text-forest uppercase leading-tight mb-6">
               Weather Intelligence Capabilities
             </h2>
-            <p className="text-lg text-forest/70 leading-relaxed font-light mb-8 max-w-xl">
-              Replacing broad regional forecasts with precise microclimate data specific to individual field blocks. The system tracks real-time parameters to eliminate guesswork entirely.
+            <p className="text-lg text-forest/70 leading-relaxed font-light max-w-xl mb-10">
+              Replacing broad regional forecasts with precise microclimate data specific to individual
+              field blocks. The system tracks real-time parameters to eliminate guesswork entirely.
             </p>
-          </div>
 
-          <div className="flex-1 w-full space-y-6">
-            {/* Atmospheric */}
-            <div className="bg-white/80 border border-forest/5 rounded-3xl p-8 hover:border-forest/10 transition-colors">
-              <h4 className="text-jade text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-3">
-                <CloudRain className="w-5 h-5" /> Atmospheric
-              </h4>
-              <div className="flex flex-wrap gap-3">
-                {['Humidity', 'Temperature', 'Light Intensity', 'Pressure', 'Wind', 'Rainfall'].map(p => (
-                  <span key={p} className="bg-forest/5 hover:bg-forest/10 transition-colors text-forest text-sm font-medium px-4 py-2 rounded-full border border-forest/5">{p}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* Plant-Specific */}
-            <div className="bg-white/80 border border-forest/5 rounded-3xl p-8 hover:border-forest/10 transition-colors">
-              <h4 className="text-jade text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-3">
-                <Sun className="w-5 h-5" /> Plant-Specific
-              </h4>
-              <div className="flex flex-wrap gap-3">
-                {['Leaf Wetness'].map(p => (
-                  <span key={p} className="bg-forest/5 hover:bg-forest/10 transition-colors text-forest text-sm font-medium px-4 py-2 rounded-full border border-forest/5">{p}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* Surface & Depth */}
-            <div className="bg-white/80 border border-forest/5 rounded-3xl p-8 hover:border-forest/10 transition-colors">
-              <h4 className="text-jade text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-3">
-                <Layers className="w-5 h-5" /> Surface & Depth
-              </h4>
-              <div className="flex flex-wrap gap-3">
-                {['Surface Temperature', 'Surface Humidity', 'Depth Temperature', 'Depth Humidity'].map(p => (
-                  <span key={p} className="bg-forest/5 hover:bg-forest/10 transition-colors text-forest text-sm font-medium px-4 py-2 rounded-full border border-forest/5">{p}</span>
-                ))}
-              </div>
+            {/* REMOVED max-w-xl FROM THIS GRID */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-9">
+              {[
+  { label: "Humidity", Icon: Droplet },
+  { label: "Light Intensity", Icon: Sun },
+  { label: "Temperature", Icon: Thermometer },
+  { label: "Leaf Wetness", Icon: Leaf },
+  { label: "Pressure", Icon: Gauge },
+  { label: "Wind", Icon: Wind },
+  { label: "Rainfall", Icon: CloudRain },
+  { label: "Surface Temperature", Icon: Thermometer },
+  { label: "Surface Humidity", Icon: Droplet },
+  { label: "Depth Temperature", Icon: Thermometer },
+  { label: "Depth Humidity", Icon: Droplet },
+].map(({ label, Icon }) => (
+  <div key={label} className="flex flex-col items-start gap-3">
+    <div className="w-16 h-16 rounded-xl bg-jade/10 flex items-center justify-center">
+      <Icon className="w-7 h-7 text-jade" />
+    </div>
+    <span className="text-base font-bold text-forest leading-tight">{label}</span>
+  </div>
+))}
             </div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex-1 flex justify-center lg:justify-end"
+          >
+            <div className="relative w-[300px] md:w-[380px] aspect-[462/840]">
+              <Image
+                src="/product/m1-portrait-scaled-removebg-preview.png"
+                alt="Grid Sphere app — live Field Conditions"
+                fill
+                className="object-contain drop-shadow-xl"
+              />
+            </div>
+          </motion.div>
         </div>
       </section>
 
