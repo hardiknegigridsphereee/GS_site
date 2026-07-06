@@ -36,7 +36,7 @@ export default function QuickFeatures() {
   return (
     <section className="my-12 w-full py-16 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 shadow-2xl shadow-forest/10">
       <div className="w-full max-w-[1800px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 xl:gap-12">
           {quickFeatures.map((feature, idx) => (
             <m.div
               key={feature.title}
@@ -44,16 +44,19 @@ export default function QuickFeatures() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="p-6 bg-white/60 border border-forest/5 rounded-3xl hover:border-jade/20 transition-all duration-300 group flex items-start gap-4"
+              className="relative p-6 lg:p-7 xl:p-8 bg-white/60 border border-forest/5 rounded-3xl hover:border-jade/20 hover:shadow-lg hover:shadow-jade/5 transition-all duration-300 group overflow-hidden"
             >
-              <div className="p-3 bg-jade/5 border border-jade/15 rounded-2xl group-hover:bg-jade/10 group-hover:scale-105 transition-all duration-300 flex-shrink-0">
+              {/* Icon — absolutely pinned to top-right, never affects heading position */}
+              <div className="absolute top-6 right-6 lg:top-70 lg:right-7 xl:top-8 xl:right-8 p-2.5 lg:p-3 bg-jade/5 border border-jade/15 rounded-2xl group-hover:bg-jade/10 group-hover:scale-105 transition-all duration-300">
                 {feature.icon}
               </div>
-              <div className="space-y-4">
-                <h4 className="text-xl lg:text-2xl font-black text-forest uppercase group-hover:text-jade transition-colors leading-tight">
+
+              {/* Text — always starts at the same fixed top offset on every card */}
+              <div className="space-y-3 lg:space-y-5 pr-14 lg:pr-16 xl:pr-20">
+                <h4 className="text-lg sm:text-xl lg:text-xl xl:text-2xl font-black text-forest uppercase group-hover:text-jade transition-colors leading-snug break-normal">
                   {feature.title}
                 </h4>
-                <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light">
+                <p className="text-sm md:text-base lg:text-[15px] xl:text-base text-forest/70 leading-relaxed font-light">
                   {feature.description}
                 </p>
               </div>

@@ -19,15 +19,15 @@ export default function Footer() {
   return (
     <footer className="py-20 px-6 md:px-12 border-t border-forest/5 bg-pearl relative z-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 mb-16">
-        
+
         {/* Column 1: Brand Info (4 Columns) */}
         <div className="md:col-span-4 space-y-6">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-10 h-10 flex items-center justify-center">
-              <img 
-                src="/logo.webp" 
-                alt="GridSphere Logo" 
-                className="w-full h-full object-contain mix-blend-multiply" 
+              <img
+                src="/logo1.webp"
+                alt="GridSphere Logo"
+                className="w-full h-full object-contain mix-blend-multiply"
               />
             </div>
             <span className="text-xl font-bold tracking-tighter text-forest">
@@ -76,7 +76,7 @@ export default function Footer() {
           <p className="text-xs text-forest/70 font-light">
             Subscribe to receive disease forecasts, micro-climate insights, and product releases.
           </p>
-          
+
           <form onSubmit={handleSubscribe} className="flex gap-2">
             <input
               type="email"

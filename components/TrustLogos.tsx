@@ -24,8 +24,7 @@ const testimonials: Testimonial[] = [
 ];
 
 const certImages = [
-  "/DPIIT.webp",
-  "/Graphic era.webp",
+  "/Graphicera.webp",
   "/TBI.webp",
   "/msme1.webp",
   "/startup-india-registration-service.webp"
@@ -44,7 +43,7 @@ export default function TrustLogos() {
   return (
     <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 shadow-2xl shadow-forest/10">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
-        
+
         {/* Left Side: Testimonials */}
         <div className="flex-1">
           {/* Testimonials Title */}
@@ -86,7 +85,7 @@ export default function TrustLogos() {
           <div className="text-xs font-bold tracking-[0.3em] text-forest/50 uppercase mb-8 lg:text-right text-center">
             Recognitions & Accreditations
           </div>
-          
+
           <div className="relative w-full aspect-[4/3] bg-canvas border border-forest/10 rounded-[40px] overflow-hidden shadow-2xl shadow-forest/10 flex items-center justify-center p-8 group">
             {/* Subtle inner shadow for depth */}
             <div className="absolute inset-0 shadow-inner pointer-events-none z-20 rounded-[40px]" />
@@ -98,16 +97,16 @@ export default function TrustLogos() {
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, scale: 1.05, filter: "blur(8px)" }}
                 transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="w-full h-full object-contain relative z-10"
+                className="w-full h-full object-contain relative z-10 mix-blend-multiply"
                 alt="Certification"
               />
             </AnimatePresence>
-            
+
             {/* Progress indicators */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
               {certImages.map((_, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className={`h-1.5 rounded-full transition-all duration-500 ${idx === certIndex ? 'w-6 bg-forest/60' : 'w-1.5 bg-forest/20'}`}
                 />
               ))}
