@@ -9,7 +9,7 @@ export default function ProductPage() {
   return (
     <main className="relative bg-pearl min-h-screen text-forest overflow-hidden">
       <Header />
-      
+
       {/* Background glow effects */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-jade/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -35,9 +35,9 @@ export default function ProductPage() {
       {/* 3-Column Core Interface Showcase */}
       <section className="py-16 px-4 md:px-8 max-w-[1600px] mx-auto relative z-10">
         <div className="flex flex-col xl:flex-row gap-10 items-center justify-center">
-          
+
           {/* Left: Field Protection Interface */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -45,7 +45,7 @@ export default function ProductPage() {
           >
             {/* Phone Notch */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-3xl" />
-            
+
             <div className="mt-8 flex justify-between items-center mb-8">
               <span className="text-sm font-bold text-forest uppercase tracking-wider">Field Protection</span>
               <ShieldCheck className="w-5 h-5 text-jade" />
@@ -87,7 +87,7 @@ export default function ProductPage() {
           </motion.div>
 
           {/* Center: Hardware Station Presentation */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -95,7 +95,7 @@ export default function ProductPage() {
           >
             {/* Glowing background */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.15),transparent_60%)] pointer-events-none" />
-            
+
             {/* Abstract Station Representation */}
             <div className="relative z-10 flex flex-col items-center transform transition-transform duration-700 group-hover:scale-105">
               {/* Anemometer top */}
@@ -123,7 +123,7 @@ export default function ProductPage() {
           </motion.div>
 
           {/* Right: Soil Health Interface */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -131,7 +131,7 @@ export default function ProductPage() {
           >
             {/* Phone Notch */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-3xl" />
-            
+
             <div className="mt-8 flex justify-between items-center mb-8">
               <span className="text-sm font-bold text-forest uppercase tracking-wider">Soil Health</span>
               <Droplet className="w-5 h-5 text-jade" />
@@ -159,7 +159,7 @@ export default function ProductPage() {
               {/* NPK Breakdown */}
               <div className="bg-forest/5 rounded-3xl p-5 border border-forest/5 space-y-4">
                 <span className="text-[10px] text-forest/40 uppercase tracking-widest font-bold mb-1 block">Macronutrients (Kg/ha)</span>
-                
+
                 <div className="flex justify-between items-center bg-white/80 p-3 rounded-xl border border-forest/5">
                   <span className="text-sm font-bold">Nitrogen (N)</span>
                   <span className="text-base font-black text-jade">180</span>
@@ -192,7 +192,7 @@ export default function ProductPage() {
           <div className="text-sm font-bold tracking-[0.3em] text-jade uppercase mb-4">Value Proposition</div>
           <h2 className="text-4xl md:text-5xl font-black tracking-tight uppercase text-forest">Core Value Offerings</h2>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-sage border border-forest/5 rounded-[32px] p-8 hover:border-jade/30 transition-all group">
             <div className="p-4 bg-jade/5 rounded-2xl w-fit mb-6 group-hover:scale-110 transition-transform">
@@ -236,7 +236,7 @@ export default function ProductPage() {
       {/* Weather Intelligence Capabilities */}
       <section className="py-32 px-6 md:px-12 w-full bg-sage border-y border-forest/5 relative z-10 shadow-2xl overflow-hidden">
         <div className="absolute right-0 bottom-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_bottom_right,rgba(16,185,129,0.05),transparent_60%)] pointer-events-none" />
-        
+
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center relative z-10">
           <div className="flex-1">
             <div className="text-sm font-bold tracking-[0.2em] text-jade uppercase mb-4 flex items-center gap-2">

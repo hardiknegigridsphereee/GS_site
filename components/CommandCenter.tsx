@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import { m, AnimatePresence } from "framer-motion";
-import { 
-  Activity, 
-  Thermometer, 
-  Droplet, 
-  Wind, 
-  ShieldAlert, 
-  Cpu, 
-  CheckCircle2, 
-  AlertTriangle, 
-  CloudRain, 
-  Sun, 
-  Sparkles, 
+import {
+  Activity,
+  Thermometer,
+  Droplet,
+  Wind,
+  ShieldAlert,
+  Cpu,
+  CheckCircle2,
+  AlertTriangle,
+  CloudRain,
+  Sun,
+  Sparkles,
   Layers
 } from "lucide-react";
 
@@ -114,13 +114,13 @@ const blocksData: Record<string, BlockData> = {
 };
 
 export default function CommandCenter() {
-  const [selectedBlock, setSelectedBlock] = useState<string>("blockB");
+  const [selectedBlock, setSelectedBlock] = useState<string>("blockA");
   const block = blocksData[selectedBlock];
 
   return (
     <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 animate-fade-in shadow-2xl shadow-forest/10">
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
@@ -135,18 +135,17 @@ export default function CommandCenter() {
               Switch between field zones to view live sensor telemetry, automated disease models, and AI intervention windows.
             </p>
           </div>
-          
+
           {/* Tabs for Block Selection */}
           <div className="flex flex-wrap p-1.5 bg-forest/5 rounded-2xl border border-forest/5 self-start md:self-auto">
             {Object.values(blocksData).map((b) => (
               <button
                 key={b.id}
                 onClick={() => setSelectedBlock(b.id)}
-                className={`px-6 py-3 rounded-xl text-sm md:text-base font-black tracking-wider uppercase transition-all duration-300 ${
-                  selectedBlock === b.id 
-                    ? "bg-jade text-black shadow-lg shadow-jade/25" 
+                className={`px-6 py-3 rounded-xl text-sm md:text-base font-black tracking-wider uppercase transition-all duration-300 ${selectedBlock === b.id
+                    ? "bg-jade text-black shadow-lg shadow-jade/25"
                     : "text-forest/70 hover:text-forest"
-                }`}
+                  }`}
               >
                 {b.name.split(" - ")[0]}
               </button>
@@ -156,15 +155,15 @@ export default function CommandCenter() {
 
         {/* Dashboard Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          
+
           {/* Column 1: Health & Telemetry Summary (4 Columns) */}
           <div className="lg:col-span-4 flex flex-col gap-6">
-            
+
             {/* Block Summary Card */}
             <div className="bg-white/80 border border-forest/5 rounded-3xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden flex-1 min-h-[300px]">
               {/* Grid glow background effect */}
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.08),transparent_70%)] pointer-events-none" />
-              
+
               <div className="relative z-10 w-full flex flex-col items-center">
                 <span className={`text-[10px] font-bold tracking-widest uppercase border px-3 py-1 rounded-full mb-6 ${block.statusColor}`}>
                   {block.status}
@@ -174,17 +173,17 @@ export default function CommandCenter() {
                 <div className="relative w-36 h-36 flex items-center justify-center mb-6">
                   {/* Outer ring */}
                   <svg className="w-full h-full transform -rotate-90">
-                    <circle 
-                      cx="72" 
-                      cy="72" 
-                      r="64" 
+                    <circle
+                      cx="72"
+                      cy="72"
+                      r="64"
                       className="stroke-white/5 stroke-[6]"
                       fill="transparent"
                     />
-                    <m.circle 
-                      cx="72" 
-                      cy="72" 
-                      r="64" 
+                    <m.circle
+                      cx="72"
+                      cy="72"
+                      r="64"
                       className="stroke-jade stroke-[6]"
                       fill="transparent"
                       strokeDasharray={402}
@@ -255,7 +254,7 @@ export default function CommandCenter() {
 
           {/* Column 2: Disease Models & Soil Moisture (5 Columns) */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            
+
             {/* Disease Prediction Engine */}
             <div className="bg-white/80 border border-forest/5 rounded-3xl p-6 flex-1 flex flex-col justify-between">
               <div>
@@ -276,7 +275,7 @@ export default function CommandCenter() {
                       <span className={`font-bold ${block.cropScabRisk > 50 ? "text-red-400" : "text-forest/60"}`}>{block.cropScabRisk}% Risk</span>
                     </div>
                     <div className="w-full bg-forest/5 h-2 rounded-full overflow-hidden">
-                      <m.div 
+                      <m.div
                         className={`h-full rounded-full ${block.cropScabRisk > 50 ? "bg-honey" : "bg-jade"}`}
                         initial={{ width: 0 }}
                         animate={{ width: `${block.cropScabRisk}%` }}
@@ -292,7 +291,7 @@ export default function CommandCenter() {
                       <span className={`font-bold ${block.fireBlightRisk > 40 ? "text-amber-400" : "text-forest/60"}`}>{block.fireBlightRisk}% Risk</span>
                     </div>
                     <div className="w-full bg-forest/5 h-2 rounded-full overflow-hidden">
-                      <m.div 
+                      <m.div
                         className={`h-full rounded-full ${block.fireBlightRisk > 40 ? "bg-amber" : "bg-jade"}`}
                         initial={{ width: 0 }}
                         animate={{ width: `${block.fireBlightRisk}%` }}
@@ -308,7 +307,7 @@ export default function CommandCenter() {
                       <span className="font-bold text-forest/60">{block.powderyMildewRisk}% Risk</span>
                     </div>
                     <div className="w-full bg-forest/5 h-2 rounded-full overflow-hidden">
-                      <m.div 
+                      <m.div
                         className="h-full rounded-full bg-jade"
                         initial={{ width: 0 }}
                         animate={{ width: `${block.powderyMildewRisk}%` }}
@@ -356,9 +355,9 @@ export default function CommandCenter() {
                 <div className="w-full bg-forest/5 h-3 rounded-full relative overflow-hidden flex">
                   {/* Ideal zone markers */}
                   <div className="absolute left-[38%] right-[42%] top-0 bottom-0 bg-jade/20 border-l border-r border-jade/30 z-10 pointer-events-none" />
-                  
+
                   {/* Indicator bar */}
-                  <m.div 
+                  <m.div
                     className={`h-full rounded-full ${block.soilMoistureColor}`}
                     initial={{ width: 0 }}
                     animate={{ width: `${block.soilMoisture}%` }}
@@ -377,12 +376,12 @@ export default function CommandCenter() {
 
           {/* Column 3: AI Recommendations Console (3 Columns) */}
           <div className="lg:col-span-3 flex flex-col">
-            
+
             {/* AI Decision Agent terminal */}
             <div className="bg-white/80 border border-jade/20 rounded-3xl p-6 flex-1 flex flex-col justify-between relative overflow-hidden shadow-2xl shadow-jade/5 min-h-[350px]">
               {/* Scanline overlay */}
               <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.015)_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px] pointer-events-none" />
-              
+
               <div className="relative z-10">
                 <div className="flex justify-between items-center border-b border-forest/5 pb-3.5 mb-5">
                   <div className="flex items-center gap-2">
