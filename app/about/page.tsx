@@ -18,10 +18,10 @@ export default function AboutPage() {
           <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase">
             About Our Company
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase leading-none">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight uppercase leading-none">
             Indian Agri-Tech Innovators
           </h1>
-          <p className="text-lg md:text-xl text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
             Grid Sphere is pioneering precision agriculture. We combine advanced weather telemetry and specialized machine learning to protect yields and secure the livelihoods of Indian farmers.
           </p>
         </div>

@@ -32,13 +32,37 @@ const advantages: CardItem[] = [
   }
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 export default function WhyChooseUs() {
   return (
     <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 shadow-2xl shadow-forest/10">
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Section Header */}
-        <div className="text-center mb-20">
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-20"
+        >
           <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase mb-4">
             Our Advantage
           </div>
@@ -48,17 +72,20 @@ export default function WhyChooseUs() {
           <p className="text-sm md:text-base text-forest/70 max-w-xl mx-auto font-light leading-relaxed">
             We bridge the gap between heavy hardware instrumentation and actionable farmer alerts, turning raw weather parameters into concrete field profits.
           </p>
-        </div>
+        </m.div>
 
         {/* Advantage Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {advantages.map((item, idx) => (
+        <m.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+        >
+          {advantages.map((item) => (
             <m.div
               key={item.title}
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              variants={cardVariants}
               className="p-8 bg-white/80 border border-forest/5 rounded-3xl hover:border-jade/20 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start group"
             >
               <div className="p-4 bg-jade/5 border border-jade/15 rounded-2xl group-hover:bg-jade/15 group-hover:scale-105 transition-all duration-300 flex-shrink-0">
@@ -74,7 +101,7 @@ export default function WhyChooseUs() {
               </div>
             </m.div>
           ))}
-        </div>
+        </m.div>
 
       </div>
     </section>

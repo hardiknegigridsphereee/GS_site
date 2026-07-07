@@ -19,11 +19,11 @@ export default function GalleryPage() {
           <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase">
             Field Deployments
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase leading-none">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight uppercase leading-none">
             Active Stations Gallery
           </h1>
-          <p className="text-lg md:text-xl text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
-            Visuals from GridSphere stations deployed on-site in Himachali fields, providing real-time data to growers in the region.
+          <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
+            Visuals from GridSphere stations deployed on-site in Himachali fields, providing real-time data to growers in the region.Each installation reflects our commitment to rugged, field-tested hardware built to withstand real agricultural conditions.
           </p>
         </div>
       </section>
@@ -40,13 +40,13 @@ export default function GalleryPage() {
               transition={{ duration: 0.5, delay: (idx % 3) * 0.1 }}
               className="group relative aspect-square rounded-[32px] overflow-hidden bg-forest/5 border border-forest/5"
             >
-              <img 
-                src={src} 
-                alt={`GridSphere deployment ${idx + 1}`} 
-                className=" h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              <img
+                src={src}
+                alt={`GridSphere deployment ${idx + 1}`}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-8">
-                <span className="text-pearl font-bold tracking-widest uppercase text-sm">Deployment #{idx + 1}</span>
+                <span className="text-pearl font-bold tracking-widest uppercase text-xs">Deployment #{idx + 1}</span>
               </div>
             </motion.div>
           ))}

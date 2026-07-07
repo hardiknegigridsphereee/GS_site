@@ -42,11 +42,11 @@ function AnimatedCounter({ value, duration = 1.8, suffix = "", prefix = "" }: Co
         if (!startTimestamp) startTimestamp = timestamp;
         const elapsed = timestamp - startTimestamp;
         const progress = Math.min(elapsed / (duration * 1000), 1);
-        
+
         // Ease out quadratic interpolation
         const easeProgress = progress * (2 - progress);
         const currentVal = Math.floor(easeProgress * value);
-        
+
         setCount(currentVal);
 
         if (progress < 1) {
@@ -55,16 +55,16 @@ function AnimatedCounter({ value, duration = 1.8, suffix = "", prefix = "" }: Co
           setCount(value);
         }
       };
-      
+
       window.requestAnimationFrame(step);
     }
   }, [inView, value, duration]);
 
   return (
-    <span ref={ref} className="text-4xl md:text-5xl font-black tracking-tight text-forest flex items-baseline">
-      <span className="text-2xl md:text-3xl font-extrabold text-jade mr-1">{prefix}</span>
+    <span ref={ref} className="text-2xl md:text-3xl font-black tracking-tight text-forest flex items-baseline">
+      <span className="text-lg md:text-xl font-extrabold text-jade mr-1">{prefix}</span>
       <span>{count}</span>
-      <span className="text-2xl md:text-3xl font-extrabold text-jade ml-0.5">{suffix}</span>
+      <span className="text-lg md:text-xl font-extrabold text-jade ml-0.5">{suffix}</span>
     </span>
   );
 }
@@ -76,31 +76,31 @@ export default function ROISection() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-jade/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        
+
         {/* Section Header */}
         <div className="text-center mb-20">
           <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase mb-4">
             Profitability Metrics
           </div>
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight text-forest uppercase mb-6 leading-tight">
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-forest uppercase mb-6 leading-tight">
             Proven Field Impact
           </h2>
-          <p className="text-base md:text-lg text-forest/70 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-sm md:text-base text-forest/70 max-w-2xl mx-auto font-light leading-relaxed">
             Agricultural intelligence isn't just about ecology—it's about economics. GridSphere eliminates input waste and secures crop output for a rapid return on investment.
           </p>
         </div>
 
         {/* ROI Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          
+
           {/* Card 1: Pesticide Savings */}
           <div className="p-8 bg-white/80 border border-forest/5 rounded-3xl flex flex-col justify-between hover:border-jade/20 transition-all duration-300 group">
             <div>
               <div className="mb-6 p-3 bg-jade/10 w-fit rounded-2xl text-jade group-hover:scale-110 transition-transform duration-300">
                 <ShieldCheck className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-forest mb-3 uppercase">Pesticide Savings</h3>
-              <p className="text-sm text-forest/70 leading-relaxed font-light">
+              <h3 className="text-lg font-bold text-forest mb-3 uppercase">Pesticide Savings</h3>
+              <p className="text-xs md:text-sm text-forest/70 leading-relaxed font-light">
                 Predict pathogen cycles to spray only when needed. Reduce chemical compound applications without risking crop or leaf health.
               </p>
             </div>
@@ -116,8 +116,8 @@ export default function ROISection() {
               <div className="mb-6 p-3 bg-jade/10 w-fit rounded-2xl text-jade group-hover:scale-110 transition-transform duration-300">
                 <TrendingUp className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-forest mb-3 uppercase">Increased Profit</h3>
-              <p className="text-sm text-forest/70 leading-relaxed font-light">
+              <h3 className="text-lg font-bold text-forest mb-3 uppercase">Increased Profit</h3>
+              <p className="text-xs md:text-sm text-forest/70 leading-relaxed font-light">
                 Maximize market-grade packout. Continuous micro-climate telemetry helps growers secure high-quality fruit and boost net revenues.
               </p>
             </div>
@@ -133,8 +133,8 @@ export default function ROISection() {
               <div className="mb-6 p-3 bg-jade/10 w-fit rounded-2xl text-jade group-hover:scale-110 transition-transform duration-300">
                 <Award className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-forest mb-3 uppercase">Yield Increase</h3>
-              <p className="text-sm text-forest/70 leading-relaxed font-light">
+              <h3 className="text-lg font-bold text-forest mb-3 uppercase">Yield Increase</h3>
+              <p className="text-xs md:text-sm text-forest/70 leading-relaxed font-light">
                 Prevent disease damage before symptoms surface. Precise canopy microclimate models protect and secure overall harvest volumes.
               </p>
             </div>
@@ -150,8 +150,8 @@ export default function ROISection() {
               <div className="mb-6 p-3 bg-jade/10 w-fit rounded-2xl text-jade group-hover:scale-110 transition-transform duration-300">
                 <Droplet className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-forest mb-3 uppercase">Equipment ROI</h3>
-              <p className="text-sm text-forest/70 leading-relaxed font-light">
+              <h3 className="text-lg font-bold text-forest mb-3 uppercase">Equipment ROI</h3>
+              <p className="text-xs md:text-sm text-forest/70 leading-relaxed font-light">
                 Recover the entire hardware and sensor station investment rapidly through massive input reductions and crop risk prevention.
               </p>
             </div>

@@ -35,13 +35,13 @@ export default function ProductPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="text-sm md:text-base font-black tracking-[0.3em] text-jade uppercase mb-6">
+          <div className="text-xs font-black tracking-[0.3em] text-jade uppercase mb-6">
             Hardware Meets Software
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight uppercase leading-tight mb-8 break-words">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight uppercase leading-tight mb-8 break-words">
             Complete field <br className="hidden md:block" /> Intelligence
           </h1>
-          <p className="text-lg md:text-2xl text-forest/70 leading-relaxed font-light max-w-3xl mx-auto">
+          <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-3xl mx-auto">
             Bridging the gap between the physical master weather array system and its digital
             interface. Experience seamless integration from raw environmental data to actionable
             smartphone insights.
@@ -111,10 +111,10 @@ export default function ProductPage() {
       {/* Core Value Offerings (4 Grid) */}
       <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <div className="text-sm font-bold tracking-[0.3em] text-jade uppercase mb-4">
+          <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase mb-4">
             Value Proposition
           </div>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight uppercase text-forest">
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight uppercase text-forest">
             Core Value Offerings
           </h2>
         </div>
@@ -124,8 +124,8 @@ export default function ProductPage() {
             <div className="p-4 bg-jade/5 rounded-2xl w-fit mb-6 group-hover:scale-110 transition-transform">
               <Activity className="w-8 h-8 text-jade" />
             </div>
-            <h3 className="text-xl font-bold uppercase mb-3 text-forest tracking-wide">Data Depth</h3>
-            <p className="text-sm text-forest/70 leading-relaxed">
+            <h3 className="text-lg font-bold uppercase mb-3 text-forest tracking-wide">Data Depth</h3>
+            <p className="text-xs md:text-sm text-forest/70 leading-relaxed">
               Capture unprecedented resolution with{" "}
               <strong className="text-forest">7 Weather Parameters</strong> and{" "}
               <strong className="text-forest">14 Soil Parameters</strong> continuously monitored.
@@ -135,8 +135,8 @@ export default function ProductPage() {
             <div className="p-4 bg-jade/5 rounded-2xl w-fit mb-6 group-hover:scale-110 transition-transform">
               <ShieldCheck className="w-8 h-8 text-jade" />
             </div>
-            <h3 className="text-xl font-bold uppercase mb-3 text-forest tracking-wide">Active Defense</h3>
-            <p className="text-sm text-forest/70 leading-relaxed">
+            <h3 className="text-lg font-bold uppercase mb-3 text-forest tracking-wide">Active Defense</h3>
+            <p className="text-xs md:text-sm text-forest/70 leading-relaxed">
               Pre-emptive alerts for <strong className="text-forest">Fungal Protection</strong> and{" "}
               <strong className="text-forest">Pest Protection</strong> before outbreaks structurally
               manifest.
@@ -146,8 +146,8 @@ export default function ProductPage() {
             <div className="p-4 bg-jade/5 rounded-2xl w-fit mb-6 group-hover:scale-110 transition-transform">
               <Target className="w-8 h-8 text-jade" />
             </div>
-            <h3 className="text-xl font-bold uppercase mb-3 text-forest tracking-wide">Resource Mgmt</h3>
-            <p className="text-sm text-forest/70 leading-relaxed">
+            <h3 className="text-lg font-bold uppercase mb-3 text-forest tracking-wide">Resource Mgmt</h3>
+            <p className="text-xs md:text-sm text-forest/70 leading-relaxed">
               Achieve precise <strong className="text-forest">Spray Timing</strong> optimizations and
               strictly monitored <strong className="text-forest">Soil Health</strong> applications.
             </p>
@@ -156,8 +156,8 @@ export default function ProductPage() {
             <div className="p-4 bg-jade/5 rounded-2xl w-fit mb-6 group-hover:scale-110 transition-transform">
               <Cpu className="w-8 h-8 text-jade" />
             </div>
-            <h3 className="text-xl font-bold uppercase mb-3 text-forest tracking-wide">Core Tech</h3>
-            <p className="text-sm text-forest/70 leading-relaxed">
+            <h3 className="text-lg font-bold uppercase mb-3 text-forest tracking-wide">Core Tech</h3>
+            <p className="text-xs md:text-sm text-forest/70 leading-relaxed">
               Driven by Edge Computing, our predictive models are{" "}
               <strong className="text-forest">Completely AI Enabled</strong> for zero-latency execution.
             </p>
@@ -171,13 +171,13 @@ export default function ProductPage() {
 
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:items-start relative z-10">
           <div className="flex-1">
-            <div className="text-sm font-bold tracking-[0.2em] text-jade uppercase mb-4 flex items-center gap-2">
+            <div className="text-xs font-bold tracking-[0.2em] text-jade uppercase mb-4 flex items-center gap-2">
               <span className="w-8 h-[2px] bg-jade" /> Microclimate Precision
             </div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-forest uppercase leading-tight mb-6">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-forest uppercase leading-tight mb-6">
               Weather Intelligence Capabilities
             </h2>
-            <p className="text-lg text-forest/70 leading-relaxed font-light max-w-xl mb-10">
+            <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-xl mb-10">
               Replacing broad regional forecasts with precise microclimate data specific to individual
               field blocks. The system tracks real-time parameters to eliminate guesswork entirely.
             </p>
@@ -185,25 +185,25 @@ export default function ProductPage() {
             {/* REMOVED max-w-xl FROM THIS GRID */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-9">
               {[
-  { label: "Humidity", Icon: Droplet },
-  { label: "Light Intensity", Icon: Sun },
-  { label: "Temperature", Icon: Thermometer },
-  { label: "Leaf Wetness", Icon: Leaf },
-  { label: "Pressure", Icon: Gauge },
-  { label: "Wind", Icon: Wind },
-  { label: "Rainfall", Icon: CloudRain },
-  { label: "Surface Temperature", Icon: Thermometer },
-  { label: "Surface Humidity", Icon: Droplet },
-  { label: "Depth Temperature", Icon: Thermometer },
-  { label: "Depth Humidity", Icon: Droplet },
-].map(({ label, Icon }) => (
-  <div key={label} className="flex flex-col items-start gap-3">
-    <div className="w-16 h-16 rounded-xl bg-jade/10 flex items-center justify-center">
-      <Icon className="w-7 h-7 text-jade" />
-    </div>
-    <span className="text-base font-bold text-forest leading-tight">{label}</span>
-  </div>
-))}
+                { label: "Humidity", Icon: Droplet },
+                { label: "Light Intensity", Icon: Sun },
+                { label: "Temperature", Icon: Thermometer },
+                { label: "Leaf Wetness", Icon: Leaf },
+                { label: "Pressure", Icon: Gauge },
+                { label: "Wind", Icon: Wind },
+                { label: "Rainfall", Icon: CloudRain },
+                { label: "Surface Temperature", Icon: Thermometer },
+                { label: "Surface Humidity", Icon: Droplet },
+                { label: "Depth Temperature", Icon: Thermometer },
+                { label: "Depth Humidity", Icon: Droplet },
+              ].map(({ label, Icon }) => (
+                <div key={label} className="flex flex-col items-start gap-3">
+                  <div className="w-16 h-16 rounded-xl bg-jade/10 flex items-center justify-center">
+                    <Icon className="w-7 h-7 text-jade" />
+                  </div>
+                  <span className="text-sm font-bold text-forest leading-tight">{label}</span>
+                </div>
+              ))}
             </div>
           </div>
 

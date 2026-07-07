@@ -49,10 +49,10 @@ export default function BlogsPage() {
           <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase">
             Agronomy Resources
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase leading-none">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight uppercase leading-none">
             field Intelligence Blogs
           </h1>
-          <p className="text-lg md:text-xl text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
             Technical guides and agronomic advice to help farmers integrate sensor data into profitable on-field routines.
           </p>
         </div>
@@ -62,19 +62,19 @@ export default function BlogsPage() {
       <section className="py-12 px-6 md:px-12 max-w-7xl mx-auto relative z-10 mb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {blogs.map((post) => (
-            <article 
-              key={post.title} 
+            <article
+              key={post.title}
               className="bg-white/80 border border-forest/5 rounded-3xl overflow-hidden hover:border-jade/20 transition-all duration-300 flex flex-col justify-between group"
             >
               <div className="p-6 md:p-8 space-y-4">
                 <span className="text-[9px] font-bold tracking-widest text-jade bg-jade/10 px-3 py-1 rounded-full uppercase inline-block">
                   {post.category}
                 </span>
-                
-                <h3 className="text-xl font-bold text-forest group-hover:text-jade transition-colors leading-tight">
+
+                <h3 className="text-lg font-bold text-forest group-hover:text-jade transition-colors leading-tight">
                   {post.title}
                 </h3>
-                
+
                 <p className="text-xs text-forest/70 leading-relaxed font-light">
                   {post.excerpt}
                 </p>
