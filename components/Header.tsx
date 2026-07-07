@@ -18,7 +18,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-forest/10 bg-pearl/90 backdrop-blur-md py-2 px-6 md:px-12 flex items-center justify-between transition-all">
+    <header className="sticky top-0 z-50 w-full border-b border-forest/10 bg-pearl backdrop-blur-md py-2 px-6 md:px-12 flex items-center justify-between transition-all">
       {/* Logo — real box sizing, no transform/rotate so mix-blend-mode composites
           seamlessly against the page with zero extra background hacks */}
       <Link href="/" className="flex items-center shrink-0">
