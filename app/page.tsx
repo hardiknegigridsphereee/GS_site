@@ -20,7 +20,17 @@ export default function Home() {
       <Header />
 
       {/* Hero Canvas Scroll Sequence */}
-      <GridSphereSequence 
+         { !isLoaded && (
+          <div className="relative min-h-screen bg-pearl flex items-center justify-center">
+              <div className="flex flex-col items-center gap-4">
+                <div className="h-10 w-10 border-t-2 border-jade rounded-full animate-spin" />
+                <span className="text-xs text-forest/60 font-light tracking-wider uppercase">
+                  Loading
+                </span>
+              </div>
+            </div>
+         )}
+         <GridSphereSequence 
         onLoadComplete={() => setIsLoaded(true)} 
       />
 

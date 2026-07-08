@@ -22,7 +22,7 @@ export default function Header() {
       {/* Logo — real box sizing, no transform/rotate so mix-blend-mode composites
           seamlessly against the page with zero extra background hacks */}
       <Link href="/" className="flex items-center shrink-0">
-        <div className="relative w-28 h-14 md:w-36 md:h-16">
+        <div className="relative h-10 md:w-36 md:h-16">
           <img
             src="/logo1.webp"
             alt="GridSphere Logo"
