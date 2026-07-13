@@ -33,11 +33,18 @@ const onboardingSteps: Step[] = [
 
 export default function WhoWeAre() {
   return (
-    <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 overflow-hidden shadow-2xl shadow-forest/10">
+    <section className="my-6 w-full py-10 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 overflow-hidden shadow-2xl shadow-forest/10">
       <div className="max-w-7xl mx-auto">
 
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-20">
+        {/* Section Header */}
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-20"
+        >
           <div className="max-w-3xl">
             <div className="text-xs font-black tracking-[0.2em] text-jade uppercase mb-4">
               Indian Agri-Tech Innovators
@@ -51,7 +58,7 @@ export default function WhoWeAre() {
               We combine robust meteorological hardware with custom disease prediction algorithms to secure field output, eliminate input guesswork, and maximize bottom-line profit.
             </p>
           </div>
-        </div>
+        </m.div>
 
         {/* Steps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">

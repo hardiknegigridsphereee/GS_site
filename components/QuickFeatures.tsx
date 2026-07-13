@@ -34,9 +34,9 @@ const quickFeatures: Feature[] = [
 
 export default function QuickFeatures() {
   return (
-    <section className="my-12 w-full py-16 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 shadow-2xl shadow-forest/10">
+    <section className="w-full py-10 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 overflow-hidden shadow-2xl shadow-forest/10">
       <div className="w-full max-w-[1800px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 xl:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6 xl:gap-6">
           {quickFeatures.map((feature, idx) => (
             <m.div
               key={feature.title}
@@ -47,7 +47,7 @@ export default function QuickFeatures() {
               className="relative p-6 lg:p-7 xl:p-8 bg-white/60 border border-forest/5 rounded-3xl hover:border-jade/20 hover:shadow-lg hover:shadow-jade/5 transition-all duration-300 group overflow-hidden"
             >
               {/* Icon — absolutely pinned to top-right, never affects heading position */}
-              <div className="absolute top-6 right-6 lg:top-70 lg:right-7 xl:top-8 xl:right-8 p-2.5 lg:p-3 bg-jade/5 border border-jade/15 rounded-2xl group-hover:bg-jade/10 group-hover:scale-105 transition-all duration-300">
+              <div className="absolute top-6 right-6 lg:top-7 lg:right-7 xl:top-8 xl:right-8 p-2.5 lg:p-3 bg-jade/5 border border-jade/15 rounded-2xl group-hover:bg-jade/10 group-hover:scale-105 transition-all duration-300">
                 {feature.icon}
               </div>
 

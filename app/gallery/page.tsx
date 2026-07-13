@@ -13,9 +13,14 @@ export default function GalleryPage() {
       <Header />
 
       {/* Hero Header */}
-      <section className="py-24 px-6 md:px-12 text-center max-w-4xl mx-auto relative overflow-hidden">
+      <section className="py-6 px-6 md:px-12 text-center max-w-4xl mx-auto relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-jade/5 blur-[90px] rounded-full pointer-events-none" />
-        <div className="relative z-10 space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-10 space-y-6"
+        >
           <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase">
             Field Deployments
           </div>
@@ -25,11 +30,11 @@ export default function GalleryPage() {
           <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
             Visuals from GridSphere stations deployed on-site in Himachali fields, providing real-time data to growers in the region.Each installation reflects our commitment to rugged, field-tested hardware built to withstand real agricultural conditions.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Gallery Cards Grid */}
-      <section className="py-12 px-6 md:px-12 max-w-[1600px] mx-auto relative z-10 mb-20">
+      <section className="px-6 md:px-12 max-w-[1600px] mx-auto relative z-10 mb-2">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {galleryImages.map((src, idx) => (
             <motion.div

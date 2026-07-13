@@ -2,6 +2,7 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
 import { BookOpen, Calendar, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -43,9 +44,14 @@ export default function BlogsPage() {
       <Header />
 
       {/* Hero Header */}
-      <section className="py-24 px-6 md:px-12 text-center max-w-4xl mx-auto relative overflow-hidden">
+      <section className="py-6 md:py-8 px-6 md:px-12 text-center max-w-5xl mx-auto relative z-10">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-jade/5 blur-[90px] rounded-full pointer-events-none" />
-        <div className="relative z-10 space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-10 space-y-6"
+        >
           <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase">
             Agronomy Resources
           </div>
@@ -55,15 +61,19 @@ export default function BlogsPage() {
           <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
             Technical guides and agronomic advice to help farmers integrate sensor data into profitable on-field routines.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Blog Cards Grid */}
-      <section className="py-12 px-6 md:px-12 max-w-7xl mx-auto relative z-10 mb-20">
+      <section className="py-6 px-6 md:px-12 max-w-7xl mx-auto relative z-10 mb-2">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {blogs.map((post) => (
-            <article
+          {blogs.map((post, idx) => (
+            <motion.article
               key={post.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: idx * 0.15 }}
               className="bg-white/80 border border-forest/5 rounded-3xl overflow-hidden hover:border-jade/20 transition-all duration-300 flex flex-col justify-between group"
             >
               <div className="p-6 md:p-8 space-y-4">
@@ -84,7 +94,7 @@ export default function BlogsPage() {
                 <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {post.date}</span>
                 <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" /> {post.author}</span>
               </div>
-            </article>
+            </motion.article>
           ))}
         </div>
       </section>

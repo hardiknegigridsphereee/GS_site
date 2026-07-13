@@ -17,7 +17,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="py-20 px-6 md:px-12 border-t border-forest/5 bg-pearl relative z-10">
+    <footer className="py-10 px-6 md:px-12 border-t border-forest/5 bg-pearl relative z-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 mb-16">
 
         {/* Column 1: Brand Info (4 Columns) */}

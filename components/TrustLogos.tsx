@@ -41,7 +41,7 @@ export default function TrustLogos() {
   }, []);
 
   return (
-    <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 shadow-2xl shadow-forest/10">
+    <section className="my-6 w-full py-5 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 overflow-hidden shadow-2xl shadow-forest/10">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
 
         {/* Left Side: Testimonials */}

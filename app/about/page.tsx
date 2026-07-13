@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import WhoWeAre from "@/components/WhoWeAre";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import TrustLogos from "@/components/TrustLogos";
+import { motion } from "framer-motion";
 
 export default function AboutPage() {
   return (
@@ -12,9 +13,14 @@ export default function AboutPage() {
       <Header />
 
       {/* Hero Header */}
-      <section className="py-24 px-6 md:px-12 text-center max-w-4xl mx-auto relative overflow-hidden">
+      <section className="py-6 px-6 md:px-12 text-center max-w-4xl mx-auto relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-jade/5 blur-[90px] rounded-full pointer-events-none" />
-        <div className="relative z-10 space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-10 space-y-6"
+        >
           <div className="text-xs font-bold tracking-[0.3em] text-jade uppercase">
             About Our Company
           </div>
@@ -24,7 +30,7 @@ export default function AboutPage() {
           <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-2xl mx-auto">
             Grid Sphere is pioneering precision agriculture. We combine advanced weather telemetry and specialized machine learning to protect yields and secure the livelihoods of Indian farmers.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Onboarding On-Field Steps */}

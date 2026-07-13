@@ -71,7 +71,7 @@ function AnimatedCounter({ value, duration = 1.8, suffix = "", prefix = "" }: Co
 
 export default function ROISection() {
   return (
-    <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 overflow-hidden shadow-2xl shadow-forest/10">
+    <section className="w-full py-10 md:py-12 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 overflow-hidden shadow-2xl shadow-forest/10">
       {/* Subtle lighting backdrop */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-jade/5 blur-[120px] rounded-full pointer-events-none" />
 

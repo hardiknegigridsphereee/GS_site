@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
@@ -8,6 +8,80 @@ import { Menu, X } from "lucide-react";
 export default function Header() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const prevScrollY = useRef(0);
+  const headerRef = useRef<HTMLElement>(null);
+
+  // Use a ref to keep the current hidden state for the scroll handler
+  // so we don't recreate the listener on each state change.
+  const isHiddenRef = useRef(isHidden);
+  useEffect(() => {
+    isHiddenRef.current = isHidden;
+  }, [isHidden]);
+
+  // Apply dynamic padding to main content
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const updatePadding = () => {
+      const height = header.offsetHeight;
+      const content = document.querySelector("main") || document.querySelector(".content") || document.body;
+      if (content) {
+        content.style.paddingTop = `${height}px`;
+      }
+    };
+
+    updatePadding();
+    window.addEventListener("resize", updatePadding);
+    const observer = new ResizeObserver(updatePadding);
+    observer.observe(header);
+
+    return () => {
+      window.removeEventListener("resize", updatePadding);
+      observer.disconnect();
+    };
+  }, []);
+
+  // Scroll direction listener – stable, using ref to avoid re‑mounts
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - prevScrollY.current;
+      const threshold = 10;
+
+      // Only update when we've crossed the threshold
+      if (Math.abs(delta) > threshold) {
+        const shouldHide = delta > 0; // true if scrolling down
+        if (shouldHide !== isHiddenRef.current) {
+          setIsHidden(shouldHide);
+          isHiddenRef.current = shouldHide; // keep ref in sync
+        }
+      }
+      prevScrollY.current = currentScrollY;
+    };
+
+    // Use requestAnimationFrame to batch updates – ensures smoothness
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []); // no dependencies → never re‑attached
+
+  // Reset hidden state when route changes (so header is always visible on navigation)
+  useEffect(() => {
+    setIsHidden(false);
+    isHiddenRef.current = false;
+  }, [pathname]);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -18,9 +92,12 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-forest/10 bg-pearl backdrop-blur-md py-2 px-6 md:px-12 flex items-center justify-between transition-all">
-      {/* Logo — real box sizing, no transform/rotate so mix-blend-mode composites
-          seamlessly against the page with zero extra background hacks */}
+    <header
+      ref={headerRef}
+      className={`fixed top-0 left-0 z-50 w-full border-b border-forest/10 bg-pearl backdrop-blur-md py-2 px-6 md:px-12 flex items-center justify-between transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform ${isHidden ? "-translate-y-full" : "translate-y-0"
+        }`}
+    >
+      {/* Logo */}
       <Link href="/" className="flex items-center shrink-0">
         <div className="relative h-10 md:w-36 md:h-16">
           <img
@@ -31,7 +108,7 @@ export default function Header() {
         </div>
       </Link>
 
-      {/* Desktop Navigation Menu */}
+      {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-10 text-lg lg:text-xl font-bold">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
@@ -43,8 +120,10 @@ export default function Header() {
                 }`}
             >
               {link.name}
-              <span className={`absolute bottom-0 left-0 w-full h-[2px] bg-jade transform origin-left transition-transform duration-355 ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                }`} />
+              <span
+                className={`absolute bottom-0 left-0 w-full h-[2px] bg-jade transform origin-left transition-transform duration-355 ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  }`}
+              />
             </Link>
           );
         })}
@@ -58,7 +137,7 @@ export default function Header() {
         Buy Now
       </Link>
 
-      {/* Mobile Hamburger Toggle */}
+      {/* Mobile Hamburger */}
       <button
         type="button"
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}

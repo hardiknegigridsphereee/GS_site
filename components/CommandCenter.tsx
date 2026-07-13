@@ -118,7 +118,7 @@ export default function CommandCenter() {
   const block = blocksData[selectedBlock];
 
   return (
-    <section className="my-12 w-full py-24 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 animate-fade-in shadow-2xl shadow-forest/10">
+    <section className="w-full py-10 md:py-12 px-4 md:px-8 xl:px-16 bg-sage border border-forest/5 md:rounded-[48px] relative z-10 animate-fade-in shadow-2xl shadow-forest/10">
       <div className="max-w-7xl mx-auto">
 
         {/* Section Header */}
@@ -143,8 +143,8 @@ export default function CommandCenter() {
                 key={b.id}
                 onClick={() => setSelectedBlock(b.id)}
                 className={`px-6 py-3 rounded-xl text-sm md:text-base font-black tracking-wider uppercase transition-all duration-300 ${selectedBlock === b.id
-                    ? "bg-jade text-black shadow-lg shadow-jade/25"
-                    : "text-forest/70 hover:text-forest"
+                  ? "bg-jade text-black shadow-lg shadow-jade/25"
+                  : "text-forest/70 hover:text-forest"
                   }`}
               >
                 {b.name.split(" - ")[0]}
