@@ -94,7 +94,7 @@ export default function Header() {
   return (
     <header
       ref={headerRef}
-      className={`fixed top-0 left-0 z-50 w-full border-b border-forest/10 bg-pearl backdrop-blur-md py-2 px-6 md:px-12 flex items-center justify-between transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform ${isHidden ? "-translate-y-full" : "translate-y-0"
+      className={`fixed top-0 left-0 z-50 w-full border-b border-black/10 bg-forest backdrop-blur-md py-2 px-6 md:px-12 flex items-center justify-between transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform ${isHidden ? "-translate-y-full" : "translate-y-0"
         }`}
     >
       {/* Logo */}
@@ -103,7 +103,7 @@ export default function Header() {
           <img
             src="/logo1.webp"
             alt="GridSphere Logo"
-            className="w-full h-full object-contain [filter:brightness(0)_saturate(100%)_invert(20%)_sepia(31%)_saturate(1352%)_hue-rotate(115deg)_brightness(93%)_contrast(93%)]"
+            className="w-full h-full object-contain [filter:brightness(0)_saturate(100%)_invert(100%)]"
           />
         </div>
       </Link>
@@ -116,7 +116,7 @@ export default function Header() {
             <Link
               key={link.name}
               href={link.href}
-              className={`transition-all duration-300 hover:text-forest hover:scale-105 transform inline-block relative py-1.5 group ${isActive ? "text-jade" : "text-forest/70"
+              className={`transition-all duration-300 hover:text-white hover:scale-105 transform inline-block relative py-1.5 group ${isActive ? "text-jade" : "text-pearl/70"
                 }`}
             >
               {link.name}
@@ -143,14 +143,14 @@ export default function Header() {
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         aria-expanded={isMenuOpen}
         onClick={() => setIsMenuOpen((prev) => !prev)}
-        className="md:hidden flex items-center justify-center w-10 h-10 text-forest"
+        className="md:hidden flex items-center justify-center w-10 h-10 text-pearl"
       >
         {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
 
       {/* Mobile Menu Panel */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-pearl border-b border-forest/10 shadow-lg">
+        <div className="md:hidden absolute top-full left-0 w-full bg-forest border-b border-black/10 shadow-lg">
           <nav className="flex flex-col px-6 py-4 gap-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
@@ -159,7 +159,7 @@ export default function Header() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`py-3 text-lg font-bold border-b border-forest/5 last:border-b-0 ${isActive ? "text-jade" : "text-forest/80"
+                  className={`py-3 text-lg font-bold border-b border-pearl/10 last:border-b-0 ${isActive ? "text-jade" : "text-pearl/80"
                     }`}
                 >
                   {link.name}

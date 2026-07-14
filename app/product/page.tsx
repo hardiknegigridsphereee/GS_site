@@ -9,13 +9,6 @@ import {
   Cpu,
   Activity,
   Target,
-  Droplet,
-  Sun,
-  Thermometer,
-  Leaf,
-  Gauge,
-  Wind,
-  CloudRain,
 } from "lucide-react";
 
 const coreValues = [
@@ -64,17 +57,17 @@ const coreValues = [
 ];
 
 const weatherParams = [
-  { label: "Humidity", Icon: Droplet },
-  { label: "Light Intensity", Icon: Sun },
-  { label: "Temperature", Icon: Thermometer },
-  { label: "Leaf Wetness", Icon: Leaf },
-  { label: "Pressure", Icon: Gauge },
-  { label: "Wind", Icon: Wind },
-  { label: "Rainfall", Icon: CloudRain },
-  { label: "Surface Temperature", Icon: Thermometer },
-  { label: "Surface Humidity", Icon: Droplet },
-  { label: "Depth Temperature", Icon: Thermometer },
-  { label: "Depth Humidity", Icon: Droplet },
+  { label: "Humidity", emoji: "💧" },
+  { label: "Light Intensity", emoji: "☀️" },
+  { label: "Temperature", emoji: "🌡️" },
+  { label: "Leaf Wetness", emoji: "🍃" },
+  { label: "Pressure", emoji: "📊" },
+  { label: "Wind", emoji: "💨" },
+  { label: "Rainfall", emoji: "🌧️" },
+  { label: "Surface Temperature", emoji: "🌡️" },
+  { label: "Surface Humidity", emoji: "💧" },
+  { label: "Depth Temperature", emoji: "🌡️" },
+  { label: "Depth Humidity", emoji: "💧" },
 ];
 
 export default function ProductPage() {
@@ -109,14 +102,21 @@ export default function ProductPage() {
       </section>
 
       {/* 3-Column Core Interface Showcase */}
-      <section className="px-4 md:px-8 max-w-[1600px] mx-auto relative z-10">
-        <div className="flex flex-col xl:flex-row gap-0 items-center justify-center">
+      <section className="px-4 md:px-8 max-w-[1600px] mx-auto relative z-10 py-10">
+        {/* Ambient background texture for this section */}
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(16,185,129,0.08),transparent_65%)] rounded-full" />
+        </div>
+
+        <div className="flex flex-col xl:flex-row gap-6 xl:gap-0 items-center justify-center">
           {/* Left: Field Protection Interface (real app screenshot) */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative w-full max-w-[320px] xl:w-[380px] aspect-[9/19]"
+            transition={{ duration: 0.7 }}
+            className="relative w-full max-w-[300px] xl:w-[360px] aspect-[9/19] xl:translate-y-6 xl:-mr-14 z-10"
+            style={{ filter: "drop-shadow(0 25px 35px rgba(16,42,32,0.25))" }}
           >
             <Image
               src="/product/m1-portrait-scaled.webp"
@@ -132,13 +132,16 @@ export default function ProductPage() {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="w-full xl:flex-1 h-[500px] flex flex-col items-center justify-center relative group"
+            transition={{ duration: 0.7 }}
+            className="w-full xl:w-[560px] h-[620px] flex flex-col items-center justify-center relative group z-20"
           >
+            {/* Grounding platform glow beneath product */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[360px] h-[70px] bg-jade/20 blur-2xl rounded-full" />
             {/* Glowing background */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.15),transparent_60%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.18),transparent_60%)] pointer-events-none" />
 
             {/* Real product image */}
-            <div className="relative z-5 w-full h-[480px]">
+            <div className="relative z-5 w-full h-[580px]">
               <Image
                 src="/product/erasebg-transformed-5.webp"
                 alt="GridSphere weather and soil monitoring station"
@@ -154,7 +157,9 @@ export default function ProductPage() {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative w-full max-w-[320px] xl:w-[380px] aspect-[9/19]"
+            transition={{ duration: 0.7 }}
+            className="relative w-full max-w-[300px] xl:w-[360px] aspect-[9/19] xl:translate-y-6 xl:-ml-14 z-10"
+            style={{ filter: "drop-shadow(0 25px 35px rgba(16,42,32,0.25))" }}
           >
             <Image
               src="/product/m5-portrait-scaled.webp"
@@ -205,10 +210,10 @@ export default function ProductPage() {
       </section>
 
       {/* Weather Intelligence Capabilities */}
-      <section className="py-5 px-6 md:px-12 w-full bg-sage border-y border-forest/5 relative z-10">
+      <section className="py-20 md:py-28 px-6 md:px-12 w-full bg-sage border-y border-forest/5 relative z-10">
         <div className="absolute right-0 bottom-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_bottom_right,rgba(16,185,129,0.05),transparent_60%)] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-3 lg:items-start relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-6 lg:items-start relative z-10">
           <div className="flex-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -222,26 +227,42 @@ export default function ProductPage() {
               <h2 className="text-3xl md:text-4xl font-black tracking-tight text-forest uppercase leading-tight mb-6">
                 Weather Intelligence Capabilities
               </h2>
-              <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-xl mb-10">
+              <p className="text-sm md:text-base text-forest/70 leading-relaxed font-light max-w-xl mb-14">
                 Replacing broad regional forecasts with precise microclimate data specific to individual
                 field blocks. The system tracks real-time parameters to eliminate guesswork entirely.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-3 gap-x-4.5 gap-y-7 justify-items-center sm:justify-items-start">
-              {weatherParams.map(({ label, Icon }, idx) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-3 gap-y-6 justify-items-center sm:justify-items-start">
+              {weatherParams.map(({ label, emoji }, idx) => (
                 <motion.div
                   key={label}
                   initial={{ opacity: 0, y: 20, scale: 0.9 }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: idx * 0.06 }}
-                  className="flex flex-col items-center w-24 gap-3"
+                  whileHover={{ y: -6 }}
+                  className="flex flex-col items-center w-24 gap-2.5 group cursor-pointer"
                 >
-                  <div className="w-16 h-16 rounded-xl bg-jade/10 flex items-center justify-center">
-                    <Icon className="w-7 h-7 text-jade" />
-                  </div>
-                  <span className="text-sm font-bold text-forest leading-tight min-h-[2.5rem] flex items-center text-center">
+                  <motion.div
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: idx * 0.15,
+                    }}
+                    whileHover={{
+                      scale: 1.12,
+                      boxShadow: "0 12px 28px rgba(16,185,129,0.3)",
+                    }}
+                    className="w-[68px] h-[68px] rounded-2xl bg-white/70 border border-jade/10 shadow-sm flex items-center justify-center transition-colors text-3xl backdrop-blur-sm"
+                  >
+                    <span className="transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110 inline-block drop-shadow-sm">
+                      {emoji}
+                    </span>
+                  </motion.div>
+                  <span className="text-xs md:text-sm font-bold text-forest leading-snug min-h-[2.25rem] flex items-center text-center group-hover:text-jade transition-colors">
                     {label}
                   </span>
                 </motion.div>
@@ -253,16 +274,24 @@ export default function ProductPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex-1 flex justify-center lg:justify-end"
+            className="flex-1 flex justify-center lg:justify-end relative mt-4 lg:mt-0 lg:pr-10 xl:pr-16"
           >
-            <div className="relative w-full max-w-[320px] xl:w-[380px] aspect-[9/19]">
+            <div className="absolute top-1/2 right-8 lg:right-16 -translate-y-1/2 w-[340px] h-[500px] xl:w-[400px] xl:h-[560px] bg-jade/10 rounded-[48px] blur-2xl pointer-events-none" />
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 lg:left-auto lg:right-24 lg:translate-x-0 w-[260px] h-[50px] bg-jade/25 blur-2xl rounded-full pointer-events-none" />
+
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="relative w-full max-w-[320px] xl:w-[400px] aspect-[9/19] rotate-3"
+              style={{ filter: "drop-shadow(0 30px 40px rgba(16,42,32,0.3))" }}
+            >
               <Image
                 src="/product/m1-portrait-scaled-removebg-preview.webp"
                 alt="Grid Sphere app — live Field Conditions"
                 fill
-                className="object-contain drop-shadow-xl"
+                className="object-contain"
               />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>

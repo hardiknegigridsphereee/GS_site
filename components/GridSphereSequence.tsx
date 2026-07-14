@@ -3,6 +3,74 @@
 import { useEffect, useRef, useState } from "react";
 import { useScroll, useTransform, m } from "framer-motion";
 
+interface ProcessedFrame {
+  canvas: HTMLCanvasElement; // full-size, drawn as-is (frame is ALREADY transparent)
+  cropX: number; // bounding box of the surviving (non-transparent) pixels,
+  cropY: number; // in the ORIGINAL image's pixel coordinates. Only this
+  cropW: number; // region is ever drawn, so any stray un-keyed background
+  cropH: number; // pixels outside it are physically cut off.
+}
+
+/**
+ * NOTE: the source frames (frames/ezgif-frame-XXX.webp) are ALREADY
+ * background-removed — they were pre-processed offline into true RGBA
+ * webp files with a clean alpha channel (no flood-fill/color-key, and no
+ * per-pixel cleanup, needed at runtime anymore). processFrame's only job
+ * now is to compute a tight crop bounding box so the draw call never
+ * touches whatever fully-transparent padding surrounds the product.
+ *
+ * PERFORMANCE: the previous version ran a full-image dilate+erode
+ * (closeAlpha) on EVERY one of the 240 frames before the sequence was
+ * marked ready — that's by far the biggest cost in the whole load path
+ * (hundreds of full-frame pixel passes). None of that is needed anymore
+ * since the alpha channel is already clean coming out of the offline
+ * pipeline, so it's removed entirely. The bounding-box scan below is also
+ * sampled at a stride instead of visiting every pixel, since a few-pixel
+ * slop on the crop edge is invisible but cuts the scan cost by STRIDE^2.
+ */
+function processFrame(img: HTMLImageElement): ProcessedFrame {
+  const off = document.createElement("canvas");
+  off.width = img.naturalWidth;
+  off.height = img.naturalHeight;
+  const octx = off.getContext("2d")!;
+  octx.drawImage(img, 0, 0);
+
+  const w = off.width, h = off.height;
+
+  // Sampled bounding-box scan (stride instead of every pixel) — the
+  // source is already keyed, so this is purely to skip drawing empty
+  // transparent margins, not to detect fine edge detail.
+  const STRIDE = 4;
+  const imageData = octx.getImageData(0, 0, w, h);
+  const data = imageData.data;
+
+  let minX = w, minY = h, maxX = 0, maxY = 0, foundAny = false;
+  for (let y = 0; y < h; y += STRIDE) {
+    for (let x = 0; x < w; x += STRIDE) {
+      const a = data[(y * w + x) * 4 + 3];
+      if (a > 8) {
+        foundAny = true;
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
+  }
+
+  if (!foundAny) {
+    return { canvas: off, cropX: 0, cropY: 0, cropW: w, cropH: h };
+  }
+
+  const pad = 4;
+  const cropX = Math.max(0, minX - pad);
+  const cropY = Math.max(0, minY - pad);
+  const cropW = Math.min(w, maxX + pad) - cropX;
+  const cropH = Math.min(h, maxY + pad) - cropY;
+
+  return { canvas: off, cropX, cropY, cropW, cropH };
+}
+
 interface GridSphereSequenceProps {
   frameCount?: number;
   onLoadComplete?: () => void;
@@ -42,8 +110,8 @@ interface GridSphereSequenceProps {
 export default function GridSphereSequence({
   frameCount = 240,
   onLoadComplete,
-  modelScale = 1,
-  modelScaleMobile,
+  modelScale = 0.75,
+  modelScaleMobile = 0.6,
   offsetY = 0,
   offsetYMobile,
   offsetX = 0,
@@ -54,6 +122,7 @@ export default function GridSphereSequence({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>(new Array(frameCount));
+  const processedRef = useRef<ProcessedFrame[]>(new Array(frameCount));
   const [isReady, setIsReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
@@ -130,14 +199,20 @@ export default function GridSphereSequence({
         };
 
         img.onload = () => {
-          if ("decode" in img) {
-            img.decode().then(onProcessed).catch(onProcessed);
-          } else {
+          const finish = () => {
+            processedRef.current[index] = processFrame(img);
             onProcessed();
+          };
+          if ("decode" in img) {
+            img.decode().then(finish).catch(finish);
+          } else {
+            finish();
           }
         };
         img.onerror = onProcessed;
         imagesRef.current[index] = img;
+        // These frames are PRE-KEYED transparent webp (RGBA) — no
+        // runtime background removal needed anymore.
         img.src = `frames/ezgif-frame-${frameNumber}.webp`;
       });
     };
@@ -153,7 +228,11 @@ export default function GridSphereSequence({
       setIsLoading(false);
       onLoadComplete?.();
 
-      const BATCH_SIZE = 5;
+      // Safe to raise this now — processFrame() no longer runs an
+      // expensive full-image dilate/erode per frame (see processFrame's
+      // comment above), so each frame is much cheaper to finish and more
+      // can be in flight at once without janking the main thread.
+      const BATCH_SIZE = 12;
       for (let i = INITIAL_FRAMES; i < frameCount; i += BATCH_SIZE) {
         const batch = [];
         for (let j = 0; j < BATCH_SIZE && i + j < frameCount; j++) {
@@ -216,17 +295,19 @@ export default function GridSphereSequence({
       lastRenderedIndex.current = currentIndex;
 
       const img = imagesRef.current[currentIndex];
-      if (!img || !img.complete || !img.naturalWidth) return;
+      const processed = processedRef.current[currentIndex];
+      if (!img || !img.complete || !img.naturalWidth || !processed) return;
 
       const canvasW = canvas.width;
       const canvasH = canvas.height;
 
-      // Source rect (with optional bottom crop of the raw frame image)
-      const srcW = img.naturalWidth;
-      const srcH = img.naturalHeight * (1 - cropBottomPercent);
+      // Scaling/positioning basis stays the FULL original image size — this
+      // is what modelScale/offsetX/offsetY were tuned against, so the model
+      // keeps the exact same small centered size/position as before.
+      const fullW = img.naturalWidth;
+      const fullH = img.naturalHeight * (1 - cropBottomPercent);
 
-      // "Cover" base scale: fills the ENTIRE canvas with no gaps.
-      const coverScale = Math.max(canvasW / srcW, canvasH / srcH);
+      const coverScale = Math.max(canvasW / fullW, canvasH / fullH);
 
       const mobile = isMobileRef.current;
       const scaleMultiplier = mobile
@@ -237,13 +318,30 @@ export default function GridSphereSequence({
       const offY = (mobile ? offsetYMobile ?? offsetY : offsetY) * dpr;
 
       const finalScale = coverScale * scaleMultiplier;
-      const dw = srcW * finalScale;
-      const dh = srcH * finalScale;
-      const dx = (canvasW - dw) / 2 + offX;
-      const dy = (canvasH - dh) / 2 + offY;
+
+      // Destination rect for the FULL frame at the tuned model size...
+      const fullDw = fullW * finalScale;
+      const fullDh = fullH * finalScale;
+      const fullDx = (canvasW - fullDw) / 2 + offX;
+      const fullDy = (canvasH - fullDh) / 2 + offY;
+
+      // ...then we only actually draw the CROPPED (keyed) region of that
+      // frame, mapped proportionally into the same destination rect. Same
+      // final size/position as drawing the full frame would give, but any
+      // stray un-keyed background pixels outside the product's bounding box
+      // are physically never drawn — so no rectangle can ever show.
+      const sx = processed.cropX;
+      const sy = processed.cropY;
+      const sw = processed.cropW;
+      const sh = processed.cropH;
+
+      const dx = fullDx + sx * finalScale;
+      const dy = fullDy + sy * finalScale;
+      const dw = sw * finalScale;
+      const dh = sh * finalScale;
 
       ctx.clearRect(0, 0, canvasW, canvasH);
-      ctx.drawImage(img, 0, 0, srcW, srcH, dx, dy, dw, dh);
+      ctx.drawImage(processed.canvas, sx, sy, sw, sh, dx, dy, dw, dh);
     };
 
     const unsubscribe = frameIndex.on("change", render);
@@ -276,14 +374,14 @@ export default function GridSphereSequence({
             modelScale / offsetX / offsetY props above. */}
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full pointer-events-none mix-blend-multiply will-change-transform"
+          className="absolute inset-0 w-full h-full pointer-events-none will-change-transform"
         />
 
         <div
           className="absolute inset-0 pointer-events-none z-20"
           style={{
             background:
-              "radial-gradient(circle at center, transparent 35%, #F4EFE6 85%)",
+              "radial-gradient(circle at center, transparent 35%, #F4EFE6 87%)",
           }}
         />
         <div className="absolute inset-0 pointer-events-none z-30">
